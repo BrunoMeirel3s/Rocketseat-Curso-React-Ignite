@@ -1,0 +1,27 @@
+.button {
+  width: 100%;
+  padding: 1rem;
+  height: 3.37rem;
+  background: var(--blue-dark);
+  border: none;
+  border-radius: 8px;
+  color: var(--gray-100);
+  font-weight: bold;
+
+  -webkit-box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.55);
+  -moz-box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.55);
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.55);
+
+  cursor: pointer;
+}
+
+.buttonText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.button:active {
+  scale: 0.96;
+}
