@@ -38,6 +38,12 @@ function App() {
   function handleDeleteTask(id: string) {
     const tasksWithoutDeletedOne = tasks.filter((task) => task.id !== id);
     setTasks(tasksWithoutDeletedOne);
+
+    setTasksAmount(tasksWithoutDeletedOne.length);
+    const amountFinishedTasks = tasksWithoutDeletedOne.filter(
+      (task) => task.checked == true
+    );
+    setFinishedTasksAmount(amountFinishedTasks.length);
   }
 
   function handleFinishTask(id: string) {
