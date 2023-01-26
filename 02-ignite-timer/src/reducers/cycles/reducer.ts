@@ -15,6 +15,13 @@ interface CyclesState {
   activeCycleId: string | null
 }
 
+/**
+ * A função cyclesReducer em questão é a function
+ * que será chamada na utilização do reducer, ela contém
+ * as actions que serão realizadas com os estados e funciona
+ * como forma de centralizar isso em um só local
+ */
+
 export function cyclesReducer(state: CyclesState, action: any) {
   switch (action.type) {
     case ActionTypes.ADD_NEW_CYCLE:
@@ -23,6 +30,13 @@ export function cyclesReducer(state: CyclesState, action: any) {
       //  cycles: [...state.cycles, action.payload.newCycle],
       //  activeCycleId: action.payload.newCycle.id,
       // }
+
+      /**
+       * O produce é utilizado como uma forma mais simples para realizar
+       * a manipulação de estados, podemos utilizar a sintaxe padrão
+       * do JavaScript para manipular os estados como se fossem simples
+       * variáveis e o immer irá realizar as alterações respeitando a imutabilidade
+       */
       return produce(state, (draft) => {
         draft.cycles.push(action.payload.newCycle)
         draft.activeCycleId = action.payload.newCycle.id

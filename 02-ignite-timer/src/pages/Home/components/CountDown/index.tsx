@@ -4,6 +4,12 @@ import { CyclesContext } from '../../../../contexts/CyclesContext'
 import { CountDownContainer, Separator } from './styles'
 
 export function Countdown() {
+  /**
+   * Abaixo estamos pegando no contexto
+   * os estados e as funções que foram criadas
+   * lá no contexto e foram passadas através
+   * do provider no arquivo App.js
+   */
   const {
     activeCycle,
     activeCycleId,

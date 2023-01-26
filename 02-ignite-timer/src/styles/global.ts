@@ -1,3 +1,7 @@
+/**
+ * Nos permite criar estilos globais de css a ser utilizados
+ * na aplicação inteira
+ */
 import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`

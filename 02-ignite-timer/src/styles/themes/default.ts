@@ -1,3 +1,6 @@
+/**
+ * Este arquivo contém os valores padrões a serem utilizados no tema
+ */
 export const defaultTheme = {
   white: '#FFF',
 

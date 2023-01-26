@@ -1,3 +1,8 @@
+/**
+ * O arquivo Router será utilizado para realizar o roteamento
+ * em cima da interface padrão do aplicativo, o que nos permite
+ * criar o efeito de SPA
+ */
 import { Routes, Route } from 'react-router-dom'
 import { DefaultLayout } from './layouts/DefaultLayout/index'
 import { History } from './pages/History/index'

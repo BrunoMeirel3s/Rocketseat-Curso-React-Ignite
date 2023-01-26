@@ -1,5 +1,12 @@
 import { Cycle } from './reducer'
 
+/**
+ * Este arquivo serve como centralizador
+ * das chamadas dos ActionTypes e como centralizador
+ * dos types e payloads a serem passados para o reducer,
+ * desta forma na hora de usar o reducer basta passar
+ * as funções no dispatch
+ */
 export enum ActionTypes {
   ADD_NEW_CYCLE = 'ADD_NEW_CYCLE',
   INTERRUPT_CURRENT_CYCLE = 'INTERRUPT_CURRENT_CYCLE',
