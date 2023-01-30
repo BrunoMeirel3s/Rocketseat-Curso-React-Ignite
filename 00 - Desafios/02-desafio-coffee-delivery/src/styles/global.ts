@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
     * {
@@ -9,12 +9,12 @@ export const GlobalStyle = createGlobalStyle`
     
     :focus{
       outline: 0;
-      box-shadow: 0 0 0 2px ${(props) => props.theme['base-hover']};
+      box-shadow: 0 0 0 2px ${(props) => props.theme["base-hover"]};
     }
 
     body {
-       background: ${(props) => props.theme['background']};
-       color: ${(props) => props.theme['base-text']};
+       background: ${(props) => props.theme["background"]};
+       color: ${(props) => props.theme["base-text"]};
        -webkit-font-smoothing: antialiased; 
     }
 
@@ -23,4 +23,4 @@ export const GlobalStyle = createGlobalStyle`
       font-weight: 400;
       font-size: 1rem;
     }
-`
+`;

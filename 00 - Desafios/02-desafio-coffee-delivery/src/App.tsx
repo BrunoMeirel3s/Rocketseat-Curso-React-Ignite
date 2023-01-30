@@ -1,4 +1,4 @@
-import { DefaultLayout } from "./layouts/DefaultLayout";
+import { GlobalStyle } from "./styles/global";
 import { ThemeProvider } from "styled-components";
 import { defaultTheme } from "./styles/themes/default";
 import { Router } from "./Router";
@@ -9,6 +9,7 @@ function App() {
       <BrowserRouter>
         <Router />
       </BrowserRouter>
+      <GlobalStyle />
     </ThemeProvider>
   );
 }
