@@ -4,7 +4,7 @@ export const ContainerButton = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 0.8rem;
     gap: 0.5rem;
     width: 100%;

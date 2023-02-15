@@ -1,9 +1,7 @@
 import styled from "styled-components";
+
 export const ContainerCheckout = styled.div`
   margin-top: 2rem;
-`;
-
-export const ContentCheckout = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
@@ -97,8 +95,6 @@ export const ContainerCafeSelecionado = styled.div`
   flex-direction: column;
   gap: 0.5rem;
 
-  max-width: 28rem;
-
   h4 {
     color: ${(props) => props.theme["base-subtitle"]};
     font-family: "Baloo 2";
@@ -107,4 +103,8 @@ export const ContainerCafeSelecionado = styled.div`
 
 export const ContainerConfirmarPedido = styled.div`
   padding: 1rem;
+  background: ${(props) => props.theme["base-card"]};
+  min-width: 28rem;
+  min-height: 31rem;
+  border-radius: 0 8px 0 8px;
 `;

@@ -1,9 +1,11 @@
 import { CurrencyDollar, MapPin } from "phosphor-react";
 import { ButtonFormaPagamento } from "./components/ButtonFormaPagamento";
+import { ItemSelectedCoffee } from "./components/ItemSelectedCoffee";
 import {
   ContainerCafeSelecionado,
   ContainerCheckout,
   ContainerCompletePedido,
+  ContainerConfirmarPedido,
   ContainerEndereco,
   ContainerFormEndereco,
   ContainerPagamento,
@@ -78,7 +80,17 @@ export function Checkout() {
           </div>
         </ContainerPagamento>
       </ContainerCompletePedido>
-      <ContainerCafeSelecionado></ContainerCafeSelecionado>
+      <ContainerCafeSelecionado>
+        <h4>Cafés selecionados</h4>
+        <ContainerConfirmarPedido>
+          <ItemSelectedCoffee
+            imagem="latte"
+            quantidade={2}
+            nome="Latte"
+            preco={15}
+          />
+        </ContainerConfirmarPedido>
+      </ContainerCafeSelecionado>
     </ContainerCheckout>
   );
 }
