@@ -89,6 +89,12 @@ export function Checkout() {
             nome="Latte"
             preco={15}
           />
+          <ItemSelectedCoffee
+            imagem="latte"
+            quantidade={2}
+            nome="Latte"
+            preco={15}
+          />
         </ContainerConfirmarPedido>
       </ContainerCafeSelecionado>
     </ContainerCheckout>

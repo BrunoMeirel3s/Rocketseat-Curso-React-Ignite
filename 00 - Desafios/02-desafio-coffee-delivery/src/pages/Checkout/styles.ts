@@ -102,7 +102,7 @@ export const ContainerCafeSelecionado = styled.div`
 `;
 
 export const ContainerConfirmarPedido = styled.div`
-  padding: 1rem;
+  padding: 2rem;
   background: ${(props) => props.theme["base-card"]};
   min-width: 28rem;
   min-height: 31rem;
