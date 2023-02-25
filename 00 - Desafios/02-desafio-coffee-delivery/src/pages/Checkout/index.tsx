@@ -9,6 +9,7 @@ import {
   ContainerEndereco,
   ContainerFormEndereco,
   ContainerPagamento,
+  ContainerTotais,
 } from "./styles";
 
 export function Checkout() {
@@ -95,6 +96,25 @@ export function Checkout() {
             nome="Latte"
             preco={15}
           />
+          <ContainerTotais>
+            <div className="totalizadores">
+              <div>
+                <span>Total de itens</span>
+                <span>R$29,70</span>
+              </div>
+              <div>
+                <span>Entrega</span>
+                <span>R$3,50</span>
+              </div>
+              <div id="totalFinal">
+                <span>Total</span>
+                <span>R$33,20</span>
+              </div>
+            </div>
+            <div className="botaoConfirmar">
+              <button>CONFIRMAR PEDIDO</button>
+            </div>
+          </ContainerTotais>
         </ContainerConfirmarPedido>
       </ContainerCafeSelecionado>
     </ContainerCheckout>

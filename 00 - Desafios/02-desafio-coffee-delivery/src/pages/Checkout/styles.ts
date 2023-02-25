@@ -108,3 +108,42 @@ export const ContainerConfirmarPedido = styled.div`
   min-height: 31rem;
   border-radius: 0 8px 0 8px;
 `;
+
+export const ContainerTotais = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .totalizadores {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    #totalFinal {
+      font-weight: bold;
+      color: ${(props) => props.theme["base-subtitle"]};
+      font-size: 1.2rem;
+    }
+  }
+
+  .botaoConfirmar {
+    button {
+      background: ${(props) => props.theme["yellow"]};
+      border: none;
+      height: 2.87rem;
+      width: 100%;
+      border-radius: 6px;
+      color: ${(props) => props.theme["white"]};
+
+      &:hover {
+        background: ${(props) => props.theme["yellow-dark"]};
+      }
+    }
+  }
+`;
