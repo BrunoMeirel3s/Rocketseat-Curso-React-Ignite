@@ -1,4 +1,4 @@
-import { ShoppingCartSimple } from "phosphor-react";
+import { Coffee, ShoppingCartSimple } from "phosphor-react";
 import { ContainerCardCoffee, PriceAmount } from "./styles";
 
 import imgExpressoTradicional from "../../../../assets/coffees/black.svg";
@@ -15,63 +15,91 @@ import imgCubano from "../../../../assets/coffees/cubano.svg";
 import imgHavaiano from "../../../../assets/coffees/havaiano.svg";
 import imgArabe from "../../../../assets/coffees/arabe.svg";
 import imgIrlandes from "../../../../assets/coffees/irlandes.svg";
+import { useEffect, useState } from "react";
+
+interface CoffeeAtCart {
+  id: string;
+  amount: number;
+  price: number;
+}
 
 interface CardCoffeeProps {
-  imagem: string;
+  id: string;
   tipo: string[];
   nome: string;
   info?: string;
   preco: number;
+  addCoffeeToCart: (id: string, price: number) => void;
+  selectedCoffees: CoffeeAtCart[];
 }
 export function CardCoffee({
-  imagem = "expressotradicional",
+  id,
   tipo,
   nome,
   info,
   preco,
+  addCoffeeToCart,
+  selectedCoffees,
 }: CardCoffeeProps) {
+  function addCoffee() {
+    addCoffeeToCart(id, preco);
+  }
+
+  const [amountCoffee, setAmountCoffee] = useState(0);
+
+  const coffeesAtCart = selectedCoffees;
+
+  let coffeeAmount = 0;
+  coffeesAtCart.map((coffee) => {
+    if (coffee.id == id) {
+      coffeeAmount = coffee.amount;
+    }
+  });
+
+  useEffect(() => {
+    setAmountCoffee(coffeeAmount);
+  }, [selectedCoffees]);
+
   return (
     <ContainerCardCoffee>
       {/**
        * Abordagem ruim, normalmente é melhor pegar o link da
        * imagem vindo do backend, utilizar assim somente para estudos
        */}
-      {imagem === "expressotradicional" && (
+      {id === "expressotradicional" && (
         <img src={imgExpressoTradicional} alt="Xícara de café tradicional" />
       )}
-      {imagem === "expressoamericano" && (
+      {id === "expressoamericano" && (
         <img src={imgExpressoAmericano} alt="Xícara de expresso americano" />
       )}
-      {imagem === "expressocremoso" && (
+      {id === "expressocremoso" && (
         <img src={imgExpressoCremoso} alt="Xícara de expresso cremoso" />
       )}
-      {imagem === "expressogelado" && (
+      {id === "expressogelado" && (
         <img src={imgExpressoGelado} alt="Xícara de expresso gelado" />
       )}
-      {imagem === "cafecomleite" && (
+      {id === "cafecomleite" && (
         <img src={imgCafeComLeite} alt="Xícara de café com leite" />
       )}
-      {imagem === "latte" && <img src={imgLatte} alt="Xícara de café latte" />}
-      {imagem === "capuccino" && (
+      {id === "latte" && <img src={imgLatte} alt="Xícara de café latte" />}
+      {id === "capuccino" && (
         <img src={imgCapuccino} alt="Xícara de capuccino" />
       )}
-      {imagem === "macchiato" && (
+      {id === "macchiato" && (
         <img src={imgMacchiato} alt="Xícara de macchiato" />
       )}
-      {imagem === "mocaccino" && (
+      {id === "mocaccino" && (
         <img src={imgMocaccino} alt="Xícara de mocaccino" />
       )}
-      {imagem === "chocolatequente" && (
+      {id === "chocolatequente" && (
         <img src={imgChocolateQuente} alt="Xícara de chocolate quente" />
       )}
-      {imagem === "cubano" && (
-        <img src={imgCubano} alt="Xícara de café cubano" />
-      )}
-      {imagem === "havaiano" && (
+      {id === "cubano" && <img src={imgCubano} alt="Xícara de café cubano" />}
+      {id === "havaiano" && (
         <img src={imgHavaiano} alt="Xícara de café havaiano" />
       )}
-      {imagem === "arabe" && <img src={imgArabe} alt="Xícara de café Árabe" />}
-      {imagem === "irlandes" && (
+      {id === "arabe" && <img src={imgArabe} alt="Xícara de café Árabe" />}
+      {id === "irlandes" && (
         <img src={imgIrlandes} alt="Xícara de café irlandes" />
       )}
       <div className="containerTipo">
@@ -84,12 +112,17 @@ export function CardCoffee({
       <span className="info">{info}</span>
       <PriceAmount>
         <div className="price">
-          R$ <span>{preco}</span>
+          <span>
+            {preco.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}
+          </span>
         </div>
         <div className="amount">
           <button>-</button>
-          <span>1</span>
-          <button>+</button>
+          <span>{amountCoffee}</span>
+          <button onClick={addCoffee}>+</button>
         </div>
         <div className="cart">
           <button>{<ShoppingCartSimple size={22} />}</button>

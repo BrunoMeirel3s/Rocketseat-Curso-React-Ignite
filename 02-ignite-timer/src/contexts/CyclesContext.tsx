@@ -4,33 +4,33 @@ import {
   useEffect,
   useReducer,
   useState,
-} from 'react'
+} from "react";
 
-import { Cycle, cyclesReducer } from '../reducers/cycles/reducer'
+import { Cycle, cyclesReducer } from "../reducers/cycles/reducer";
 
 import {
   ActionTypes,
   addNewCycleAction,
   interruptCurrentCycleAction,
   markCurrentCycleAsFinishedAction,
-} from '../reducers/cycles/actions'
+} from "../reducers/cycles/actions";
 
-import { differenceInSeconds } from 'date-fns'
+import { differenceInSeconds } from "date-fns";
 
 interface CreateCycleData {
-  task: string
-  minutesAmount: number
+  task: string;
+  minutesAmount: number;
 }
 
 interface CyclesContextType {
-  cycles: Cycle[]
-  activeCycle: Cycle | undefined
-  activeCycleId: string | null
-  amountSecondsPassed: number
-  markCurrentCycleAsFinished: () => void
-  setSecondsPassed: (seconds: number) => void
-  createNewCycle: (data: CreateCycleData) => void
-  interruptCurrentCycle: () => void
+  cycles: Cycle[];
+  activeCycle: Cycle | undefined;
+  activeCycleId: string | null;
+  amountSecondsPassed: number;
+  markCurrentCycleAsFinished: () => void;
+  setSecondsPassed: (seconds: number) => void;
+  createNewCycle: (data: CreateCycleData) => void;
+  interruptCurrentCycle: () => void;
 }
 
 /**
@@ -38,7 +38,7 @@ interface CyclesContextType {
  * feita a criação do provider também para disponibilizar
  * este contexto
  */
-export const CyclesContext = createContext({} as CyclesContextType)
+export const CyclesContext = createContext({} as CyclesContextType);
 
 /**
  * A tipagem ReactNode informa para o typescript que iremos
@@ -46,7 +46,7 @@ export const CyclesContext = createContext({} as CyclesContextType)
  * este componente será um wrapper de outro
  */
 interface CyclesContextProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export function CyclesContextProvider({
@@ -69,23 +69,23 @@ export function CyclesContextProvider({
      */
     () => {
       const storedStateAsJSON = localStorage.getItem(
-        '@ignite-timer:cycles-state-1.0.0',
-      )
+        "@ignite-timer:cycles-state-1.0.0"
+      );
 
       if (storedStateAsJSON) {
-        return JSON.parse(storedStateAsJSON)
+        return JSON.parse(storedStateAsJSON);
       }
-    },
-  )
-  const { cycles, activeCycleId } = cyclesState
-  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+    }
+  );
+  const { cycles, activeCycleId } = cyclesState;
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
     if (activeCycle) {
-      return differenceInSeconds(new Date(), new Date(activeCycle.startDate))
+      return differenceInSeconds(new Date(), new Date(activeCycle.startDate));
     }
-    return 0
-  })
+    return 0;
+  });
 
   useEffect(() => {
     /**
@@ -93,9 +93,9 @@ export function CyclesContextProvider({
      * em localstorage os estados atuais do cycles, para então depois ser
      * recuperado pelo useReducer
      */
-    const stateJSON = JSON.stringify(cyclesState)
-    localStorage.setItem('@ignite-timer:cycles-state-1.0.0', stateJSON)
-  }, [cyclesState])
+    const stateJSON = JSON.stringify(cyclesState);
+    localStorage.setItem("@ignite-timer:cycles-state-1.0.0", stateJSON);
+  }, [cyclesState]);
 
   /**
    * Neste trecho é criado uma outra function para
@@ -104,7 +104,7 @@ export function CyclesContextProvider({
    * bastante confusa ainda pelo typescript
    */
   function setSecondsPassed(seconds: number) {
-    setAmountSecondsPassed(seconds)
+    setAmountSecondsPassed(seconds);
   }
 
   function markCurrentCycleAsFinished() {
@@ -123,7 +123,7 @@ export function CyclesContextProvider({
      * utilizando o reducer, dentro do dispatch é passado a function
      * criada no reducer para manipulação do estado
      */
-    dispatch(markCurrentCycleAsFinishedAction())
+    dispatch(markCurrentCycleAsFinishedAction());
   }
 
   function createNewCycle(data: CreateCycleData) {
@@ -132,16 +132,16 @@ export function CyclesContextProvider({
       task: data.task,
       minutesAmount: data.minutesAmount,
       startDate: new Date(),
-    }
+    };
 
     /**
      * Sempre que a informação do estado depender do estado anterior é necessário
      * usar esse formato de set
      */
     // setCycles((state) => [...state, newCycle])
-    dispatch(addNewCycleAction(newCycle))
+    dispatch(addNewCycleAction(newCycle));
     // setActiveCycleId(newCycle.id)
-    setAmountSecondsPassed(0)
+    setAmountSecondsPassed(0);
     // reset() // Reseta o formulário
   }
 
@@ -156,7 +156,7 @@ export function CyclesContextProvider({
         }
       }),
     ) */
-    dispatch(interruptCurrentCycleAction())
+    dispatch(interruptCurrentCycleAction());
     // setActiveCycleId(null)
   }
 
@@ -179,5 +179,5 @@ export function CyclesContextProvider({
     >
       {children}
     </CyclesContext.Provider>
-  )
+  );
 }

@@ -6,8 +6,12 @@ import {
 } from "./styles";
 import { CardCoffee } from "./components/CardCoffee";
 
+import { useContext } from "react";
+import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
+
 const coffes = [
   {
+    id: "expressotradicional",
     imagem: "expressotradicional",
     nome: "Expresso Tradicional",
     tipo: ["TRADICIONAL"],
@@ -15,6 +19,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "expressoamericano",
     imagem: "expressoamericano",
     nome: "Expresso Americano",
     tipo: ["TRADICIONAL"],
@@ -22,6 +27,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "expressocremoso",
     imagem: "expressocremoso",
     nome: "Expresso Cremoso",
     tipo: ["TRADICIONAL"],
@@ -29,6 +35,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "expressogelado",
     imagem: "expressogelado",
     nome: "Expresso Gelado",
     tipo: ["TRADICIONAL", "GELADO"],
@@ -36,6 +43,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "cafecomleite",
     imagem: "cafecomleite",
     nome: "Café com Leite",
     tipo: ["TRADICIONAL", "COM LEITE"],
@@ -43,6 +51,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "latte",
     imagem: "latte",
     nome: "Latte",
     tipo: ["TRADICIONAL", "COM LEITE"],
@@ -50,6 +59,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "capuccino",
     imagem: "capuccino",
     nome: "Capuccino",
     tipo: ["TRADICIONAL", "COM LEITE"],
@@ -57,6 +67,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "macchiato",
     imagem: "macchiato",
     nome: "Macchiato",
     tipo: ["TRADICIONAL", "COM LEITE"],
@@ -64,6 +75,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "mocaccino",
     imagem: "mocaccino",
     nome: "Mocaccino",
     tipo: ["TRADICIONAL", "COM LEITE"],
@@ -71,6 +83,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "chocolatequente",
     imagem: "chocolatequente",
     nome: "Chocolate Quente",
     tipo: ["ESPECIAL", "COM LEITE"],
@@ -78,6 +91,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "cubano",
     imagem: "cubano",
     nome: "Cubano",
     tipo: ["ESPECIAL", "ALCOÓLICO", "GELADO"],
@@ -85,6 +99,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "havaiano",
     imagem: "havaiano",
     nome: "Havaiano",
     tipo: ["ESPECIAL"],
@@ -92,6 +107,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "arabe",
     imagem: "arabe",
     nome: "Árabe",
     tipo: ["ESPECIAL"],
@@ -99,6 +115,7 @@ const coffes = [
     preco: 9.9,
   },
   {
+    id: "irlandes",
     imagem: "irlandes",
     nome: "Irlandês",
     tipo: ["ESPECIAL", "ALCOÓLICO"],
@@ -108,6 +125,9 @@ const coffes = [
 ];
 
 export function Home() {
+  const { selectedCoffees, addCoffeeToCart } = useContext(
+    CarrinhoCompraContext
+  );
   return (
     <ContainerHome>
       <Intro />
@@ -117,11 +137,13 @@ export function Home() {
           {coffes.map((coffee) => {
             return (
               <CardCoffee
-                imagem={coffee.imagem}
+                id={coffee.id}
                 nome={coffee.nome}
                 info={coffee.info}
                 preco={coffee.preco}
                 tipo={coffee.tipo}
+                addCoffeeToCart={addCoffeeToCart}
+                selectedCoffees={selectedCoffees}
               />
             );
           })}
