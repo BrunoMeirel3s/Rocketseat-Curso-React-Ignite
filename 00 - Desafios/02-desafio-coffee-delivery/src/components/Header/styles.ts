@@ -24,9 +24,28 @@ export const Cart = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 
   &:hover {
     cursor: pointer;
+  }
+
+  div {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+
+    z-index: 4;
+    background: ${(props) => props.theme["yellow-dark"]};
+    color: ${(props) => props.theme["white"]};
+    padding: 0.2rem 0.4rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
   }
 `;
 
@@ -40,7 +59,7 @@ export const Location = styled.div`
   padding: 0.5rem;
   border-radius: 8px;
 
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 `;

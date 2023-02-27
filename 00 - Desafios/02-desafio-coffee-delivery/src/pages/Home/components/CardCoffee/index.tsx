@@ -31,6 +31,7 @@ interface CardCoffeeProps {
   preco: number;
   addCoffeeToCart: (id: string, price: number) => void;
   selectedCoffees: CoffeeAtCart[];
+  decreaseAmountOfCoffee: (id: string) => void;
 }
 export function CardCoffee({
   id,
@@ -40,9 +41,13 @@ export function CardCoffee({
   preco,
   addCoffeeToCart,
   selectedCoffees,
+  decreaseAmountOfCoffee,
 }: CardCoffeeProps) {
   function addCoffee() {
     addCoffeeToCart(id, preco);
+  }
+  function decreaseCoffee() {
+    decreaseAmountOfCoffee(id);
   }
 
   const [amountCoffee, setAmountCoffee] = useState(0);
@@ -120,7 +125,7 @@ export function CardCoffee({
           </span>
         </div>
         <div className="amount">
-          <button>-</button>
+          <button onClick={decreaseCoffee}>-</button>
           <span>{amountCoffee}</span>
           <button onClick={addCoffee}>+</button>
         </div>

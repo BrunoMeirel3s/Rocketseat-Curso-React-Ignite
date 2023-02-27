@@ -1,7 +1,11 @@
 import { Cart, Container, ContainerLocationCart, Location } from "./styles";
 import { MapPin, ShoppingCartSimple } from "phosphor-react";
 import imgLogo from "../../assets/logo.svg";
+
+import { useContext } from "react";
+import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
 export function Header() {
+  const { amountSelectedCoffees } = useContext(CarrinhoCompraContext);
   return (
     <Container>
       <div>
@@ -13,7 +17,10 @@ export function Header() {
           Porto Alegre, RS
         </Location>
         <Cart>
-          <ShoppingCartSimple size={22} />
+          <a href="/checkout">
+            <ShoppingCartSimple size={22} />
+            {amountSelectedCoffees >= 1 && <div>{amountSelectedCoffees}</div>}
+          </a>
         </Cart>
       </ContainerLocationCart>
     </Container>

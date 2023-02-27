@@ -12,7 +12,13 @@ import {
   ContainerTotais,
 } from "./styles";
 
+import { useContext } from "react";
+import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
+import { coffees } from "../../mocks/coffeeList";
+
 export function Checkout() {
+  const { selectedCoffees } = useContext(CarrinhoCompraContext);
+
   return (
     <ContainerCheckout>
       <ContainerCompletePedido>
@@ -90,12 +96,16 @@ export function Checkout() {
             nome="Latte"
             preco={15}
           />
-          <ItemSelectedCoffee
-            imagem="latte"
-            quantidade={2}
-            nome="Latte"
-            preco={15}
-          />
+          {selectedCoffees.map((coffee) => {
+            return (
+              <ItemSelectedCoffee
+                imagem={coffee.id}
+                quantidade={coffee.amount}
+                nome="Latte"
+                preco={coffee.amount}
+              />
+            );
+          })}
           <ContainerTotais>
             <div className="totalizadores">
               <div>
