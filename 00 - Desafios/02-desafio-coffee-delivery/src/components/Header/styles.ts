@@ -7,6 +7,14 @@ export const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+
+  a:active,
+  a:focus {
+    outline: 0;
+    border: none;
+    -moz-outline-style: none;
+    box-shadow: none;
+  }
 `;
 
 export const ContainerLocationCart = styled.div`

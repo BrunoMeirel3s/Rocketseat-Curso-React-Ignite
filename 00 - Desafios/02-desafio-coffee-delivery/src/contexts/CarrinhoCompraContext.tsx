@@ -53,8 +53,25 @@ export function CarrinhoCompraContextProvider({
   useEffect(() => {
     const amount = selectedCoffees.length;
     setAmountSelectedCoffees(amount);
-    console.log(amount);
+
+    if (selectedCoffees.length >= 1) {
+      const stateJSON = JSON.stringify(selectedCoffees);
+      localStorage.setItem(
+        "@ignite-coffee-delivery:selectedCoffees",
+        stateJSON
+      );
+    }
   }, [selectedCoffees]);
+
+  useEffect(() => {
+    const localSelectedCoffees = localStorage.getItem(
+      "@ignite-coffee-delivery:selectedCoffees"
+    );
+
+    if (localSelectedCoffees) {
+      setSelectedCoffees(JSON.parse(localSelectedCoffees));
+    }
+  }, []);
 
   function decreaseAmountOfCoffee(id: string) {
     let addedCoffees = selectedCoffees;

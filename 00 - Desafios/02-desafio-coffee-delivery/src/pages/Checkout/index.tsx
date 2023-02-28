@@ -14,10 +14,10 @@ import {
 
 import { useContext } from "react";
 import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
-import { coffees } from "../../mocks/coffeeList";
 
 export function Checkout() {
-  const { selectedCoffees } = useContext(CarrinhoCompraContext);
+  const { selectedCoffees, addCoffeeToCart, decreaseAmountOfCoffee } =
+    useContext(CarrinhoCompraContext);
 
   return (
     <ContainerCheckout>
@@ -90,19 +90,14 @@ export function Checkout() {
       <ContainerCafeSelecionado>
         <h4>Cafés selecionados</h4>
         <ContainerConfirmarPedido>
-          <ItemSelectedCoffee
-            imagem="latte"
-            quantidade={2}
-            nome="Latte"
-            preco={15}
-          />
           {selectedCoffees.map((coffee) => {
             return (
               <ItemSelectedCoffee
                 imagem={coffee.id}
                 quantidade={coffee.amount}
-                nome="Latte"
                 preco={coffee.amount}
+                addCoffeeToCart={addCoffeeToCart}
+                decreaseAmountOfCoffee={decreaseAmountOfCoffee}
               />
             );
           })}

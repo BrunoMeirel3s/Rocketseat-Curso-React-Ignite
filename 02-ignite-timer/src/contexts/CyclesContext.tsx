@@ -89,7 +89,7 @@ export function CyclesContextProvider({
 
   useEffect(() => {
     /**
-     * Ao iniciar o projeto e ao alterar algum ciclo será saldo
+     * Ao iniciar o projeto e ao alterar algum ciclo será salvo
      * em localstorage os estados atuais do cycles, para então depois ser
      * recuperado pelo useReducer
      */

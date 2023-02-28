@@ -21,21 +21,48 @@ import imgHavaiano from "../../../../assets/coffees/havaiano.svg";
 import imgArabe from "../../../../assets/coffees/arabe.svg";
 import imgIrlandes from "../../../../assets/coffees/irlandes.svg";
 
-import { Trash } from "phosphor-react";
+import { coffees } from "../../../../mocks/coffeeList";
+
+import { Coffee, Trash } from "phosphor-react";
+import { useEffect, useState } from "react";
 
 interface ItemSelectedCofeeProps {
   imagem: string;
-  nome: string;
   preco: number;
   quantidade: number;
+  addCoffeeToCart: (id: string, price: number) => void;
+  decreaseAmountOfCoffee: (id: string) => void;
+}
+
+interface detailedCoffee {
+  id: string;
+  imagem: string;
+  tipo: string[];
+  info: string;
+  preco: number;
 }
 
 export function ItemSelectedCoffee({
   imagem,
-  nome,
   preco,
   quantidade,
+  addCoffeeToCart,
+  decreaseAmountOfCoffee,
 }: ItemSelectedCofeeProps) {
+  const [coffeeName, setCoffeeName] = useState("");
+  const coffeeWithDetail = coffees.filter((coffee) => coffee.id == imagem);
+
+  useEffect(() => {
+    setCoffeeName(coffeeWithDetail[0].nome);
+  }, []);
+
+  function addCoffee() {
+    addCoffeeToCart(imagem, preco);
+  }
+
+  function decreaseAmount() {
+    decreaseAmountOfCoffee(imagem);
+  }
   return (
     <Container>
       <Content>
@@ -94,12 +121,12 @@ export function ItemSelectedCoffee({
           )}
         </ContainerImage>
         <ContainerAmount>
-          <div className="caffeeName">{nome}</div>
+          <div className="caffeeName">{coffeeName}</div>
           <div className="containerButtons">
             <div className="buttonAmount">
-              <button>-</button>
+              <button onClick={decreaseAmount}>-</button>
               <span>{quantidade}</span>
-              <button>+</button>
+              <button onClick={addCoffee}>+</button>
             </div>
             <button className="buttonRemove">
               {" "}

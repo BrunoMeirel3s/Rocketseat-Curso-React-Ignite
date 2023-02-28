@@ -9,7 +9,9 @@ export function Header() {
   return (
     <Container>
       <div>
-        <img src={imgLogo} alt="" />
+        <a href="/">
+          <img src={imgLogo} alt="" />
+        </a>
       </div>
       <ContainerLocationCart>
         <Location>
