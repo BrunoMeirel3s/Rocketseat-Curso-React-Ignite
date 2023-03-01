@@ -11,8 +11,12 @@ import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
 import { coffees } from "../../mocks/coffeeList";
 
 export function Home() {
-  const { selectedCoffees, addCoffeeToCart, decreaseAmountOfCoffee } =
-    useContext(CarrinhoCompraContext);
+  const {
+    selectedCoffees,
+    addRemoveCoffeeToCart,
+    increaseAmountOfCoffee,
+    decreaseAmountOfCoffee,
+  } = useContext(CarrinhoCompraContext);
   return (
     <ContainerHome>
       <Intro />
@@ -27,7 +31,8 @@ export function Home() {
                 info={coffee.info}
                 preco={coffee.preco}
                 tipo={coffee.tipo}
-                addCoffeeToCart={addCoffeeToCart}
+                addRemoveCoffeeToCart={addRemoveCoffeeToCart}
+                increaseAmountOfCoffee={increaseAmountOfCoffee}
                 selectedCoffees={selectedCoffees}
                 decreaseAmountOfCoffee={decreaseAmountOfCoffee}
               />

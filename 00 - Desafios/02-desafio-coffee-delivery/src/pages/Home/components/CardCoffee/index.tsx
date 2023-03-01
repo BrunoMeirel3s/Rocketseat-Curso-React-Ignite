@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 interface CoffeeAtCart {
   id: string;
   amount: number;
-  price: number;
+  alreadyInCart: boolean;
 }
 
 interface CardCoffeeProps {
@@ -29,8 +29,9 @@ interface CardCoffeeProps {
   nome: string;
   info?: string;
   preco: number;
-  addCoffeeToCart: (id: string, price: number) => void;
+  addRemoveCoffeeToCart: (id: string, amount: number) => void;
   selectedCoffees: CoffeeAtCart[];
+  increaseAmountOfCoffee: (id: string) => void;
   decreaseAmountOfCoffee: (id: string) => void;
 }
 export function CardCoffee({
@@ -39,13 +40,19 @@ export function CardCoffee({
   nome,
   info,
   preco,
-  addCoffeeToCart,
+  addRemoveCoffeeToCart,
   selectedCoffees,
+  increaseAmountOfCoffee,
   decreaseAmountOfCoffee,
 }: CardCoffeeProps) {
-  function addCoffee() {
-    addCoffeeToCart(id, preco);
+  function addRemoveCoffee() {
+    addRemoveCoffeeToCart(id, amountCoffee);
   }
+
+  function increaseCoffee() {
+    increaseAmountOfCoffee(id);
+  }
+
   function decreaseCoffee() {
     decreaseAmountOfCoffee(id);
   }
@@ -127,10 +134,12 @@ export function CardCoffee({
         <div className="amount">
           <button onClick={decreaseCoffee}>-</button>
           <span>{amountCoffee}</span>
-          <button onClick={addCoffee}>+</button>
+          <button onClick={increaseCoffee}>+</button>
         </div>
         <div className="cart">
-          <button>{<ShoppingCartSimple size={22} />}</button>
+          <button onClick={addRemoveCoffee}>
+            {<ShoppingCartSimple size={22} />}
+          </button>
         </div>
       </PriceAmount>
     </ContainerCardCoffee>
