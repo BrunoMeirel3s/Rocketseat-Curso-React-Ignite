@@ -28,9 +28,9 @@ import { useEffect, useState } from "react";
 
 interface ItemSelectedCofeeProps {
   imagem: string;
-  preco: number;
   quantidade: number;
-  addCoffeeToCart: (id: string, price: number) => void;
+  addRemoveCoffeeToCart: (id: string, amount: number) => void;
+  increaseAmountOfCoffee: (id: string) => void;
   decreaseAmountOfCoffee: (id: string) => void;
 }
 
@@ -44,20 +44,31 @@ interface detailedCoffee {
 
 export function ItemSelectedCoffee({
   imagem,
-  preco,
   quantidade,
-  addCoffeeToCart,
+  addRemoveCoffeeToCart,
+  increaseAmountOfCoffee,
   decreaseAmountOfCoffee,
 }: ItemSelectedCofeeProps) {
   const [coffeeName, setCoffeeName] = useState("");
-  const coffeeWithDetail = coffees.filter((coffee) => coffee.id == imagem);
+
+  /**
+   *Busca os detalhes do café diretamente do arquivo original
+   *com a descrição do mesmo
+   */
+  const coffeeWithDetail = coffees.filter(
+    (coffee: detailedCoffee) => coffee.id == imagem
+  );
 
   useEffect(() => {
     setCoffeeName(coffeeWithDetail[0].nome);
   }, []);
 
-  function addCoffee() {
-    addCoffeeToCart(imagem, preco);
+  function addOrRemoveCoffee() {
+    addRemoveCoffeeToCart(imagem, quantidade);
+  }
+
+  function increaseAmount() {
+    increaseAmountOfCoffee(imagem);
   }
 
   function decreaseAmount() {
@@ -126,9 +137,9 @@ export function ItemSelectedCoffee({
             <div className="buttonAmount">
               <button onClick={decreaseAmount}>-</button>
               <span>{quantidade}</span>
-              <button onClick={addCoffee}>+</button>
+              <button onClick={increaseAmount}>+</button>
             </div>
-            <button className="buttonRemove">
+            <button className="buttonRemove" onClick={addOrRemoveCoffee}>
               {" "}
               <Trash size={18} /> <span>REMOVER</span>{" "}
             </button>
@@ -136,7 +147,7 @@ export function ItemSelectedCoffee({
         </ContainerAmount>
         <ContainerPrice>
           <span>
-            {(quantidade * preco).toLocaleString("pt-BR", {
+            {(quantidade * coffeeWithDetail[0].preco).toLocaleString("pt-BR", {
               style: "currency",
               currency: "BRL",
             })}

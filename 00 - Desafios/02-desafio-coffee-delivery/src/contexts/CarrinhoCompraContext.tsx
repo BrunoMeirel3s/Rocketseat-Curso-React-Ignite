@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
+import { coffees } from "../mocks/coffeeList";
 
 interface Coffee {
   id: string;
@@ -43,28 +44,17 @@ export function CarrinhoCompraContextProvider({
           return coffee;
         });
       } else {
+        //Remove um café que já está no carrinho
         addedCoffees = addedCoffees.filter((coffee) => coffee.id !== id);
       }
     } else {
-      console.log("café não existe");
-    }
-
-    /*
-    if (coffeeAlreadyInCart.length > 0) {
-      addedCoffees = addedCoffees.map((coffee) => {
-        if (coffee.id == id) {
-          coffee.amount++;
-        }
-        return coffee;
-      });
-    } else {
+      //Adiciona o café no carrinho caso o mesmo já não esteja
       addedCoffees.push({
-        id: id,
-        amount: 1,
+        id,
+        amount,
         alreadyInCart: true,
       });
-    }*/
-
+    }
     setSelectedCoffees(addedCoffees);
   }
 
@@ -95,10 +85,10 @@ export function CarrinhoCompraContextProvider({
     let addedCoffees = selectedCoffees;
 
     let coffeeAlreadyInCart = addedCoffees.filter(
-      (coffee) => coffee.id == id && coffee.amount >= 1
+      (coffee) => coffee.id == id && coffee.amount >= 2
     );
 
-    if (coffeeAlreadyInCart.length > 0) {
+    if (coffeeAlreadyInCart.length >= 1) {
       addedCoffees = addedCoffees.map((coffee) => {
         if (coffee.id == id) {
           coffee.amount--;
@@ -138,7 +128,12 @@ export function CarrinhoCompraContextProvider({
     );
 
     if (localSelectedCoffees) {
-      setSelectedCoffees(JSON.parse(localSelectedCoffees));
+      let filteredLocalSelectedCoffees = JSON.parse(localSelectedCoffees);
+
+      filteredLocalSelectedCoffees = filteredLocalSelectedCoffees.filter(
+        (coffee: Coffee) => coffee.alreadyInCart === true
+      );
+      setSelectedCoffees(filteredLocalSelectedCoffees);
     }
   }, []);
 

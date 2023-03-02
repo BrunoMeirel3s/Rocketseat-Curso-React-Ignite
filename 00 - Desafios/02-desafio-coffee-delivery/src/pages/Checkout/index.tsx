@@ -1,6 +1,7 @@
 import { CurrencyDollar, MapPin } from "phosphor-react";
 import { ButtonFormaPagamento } from "./components/ButtonFormaPagamento";
 import { ItemSelectedCoffee } from "./components/ItemSelectedCoffee";
+import { coffees } from "../../mocks/coffeeList";
 import {
   ContainerCafeSelecionado,
   ContainerCheckout,
@@ -16,8 +17,25 @@ import { useContext } from "react";
 import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
 
 export function Checkout() {
-  const { selectedCoffees, addCoffeeToCart, decreaseAmountOfCoffee } =
-    useContext(CarrinhoCompraContext);
+  const {
+    selectedCoffees,
+    addRemoveCoffeeToCart,
+    increaseAmountOfCoffee,
+    decreaseAmountOfCoffee,
+  } = useContext(CarrinhoCompraContext);
+
+  /**
+   * Continuar daqui
+   */
+  const filteredDetailedCoffees = coffees.filter((detailedCoffee) => {
+    selectedCoffees.map((coffee) => {
+      if (detailedCoffee.id === coffee.id) {
+        return detailedCoffee;
+      }
+    });
+  });
+
+  console.log(filteredDetailedCoffees);
 
   return (
     <ContainerCheckout>
@@ -95,8 +113,8 @@ export function Checkout() {
               <ItemSelectedCoffee
                 imagem={coffee.id}
                 quantidade={coffee.amount}
-                preco={coffee.amount}
-                addCoffeeToCart={addCoffeeToCart}
+                addRemoveCoffeeToCart={addRemoveCoffeeToCart}
+                increaseAmountOfCoffee={increaseAmountOfCoffee}
                 decreaseAmountOfCoffee={decreaseAmountOfCoffee}
               />
             );
