@@ -1,3 +1,4 @@
+import { Coffee } from "phosphor-react";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { coffees } from "../mocks/coffeeList";
 
@@ -5,6 +6,13 @@ interface Coffee {
   id: string;
   amount: number;
   alreadyInCart: boolean;
+  price: number;
+  name: string;
+}
+
+interface Totals {
+  totalDeliveryPrice: number;
+  totalPriceCoffees: number;
 }
 
 interface CarrinhoCompraContextType {
@@ -13,6 +21,7 @@ interface CarrinhoCompraContextType {
   decreaseAmountOfCoffee: (id: string) => void;
   increaseAmountOfCoffee: (id: string) => void;
   amountSelectedCoffees: number;
+  totals: Totals[];
 }
 
 export const CarrinhoCompraContext = createContext(
@@ -29,10 +38,16 @@ export function CarrinhoCompraContextProvider({
   const [selectedCoffees, setSelectedCoffees] = useState<Coffee[]>([]);
   const [amountSelectedCoffees, setAmountSelectedCoffees] = useState<number>(0);
 
+  const [totalDeliveryPrice, setTotalDeliveryPrice] = useState<number>(0);
+  const [totalPriceCoffees, setTotalPriceCoffees] = useState<number>(0);
+  const [totals, setTotals] = useState<Totals[]>([]);
+
   function addRemoveCoffeeToCart(id: string, amount: number) {
     let addedCoffees = selectedCoffees;
 
     let coffeeToAddOrRemove = addedCoffees.filter((coffee) => coffee.id == id);
+
+    let detailsOfCoffee = coffees.filter((coffee) => coffee.id == id);
 
     if (coffeeToAddOrRemove.length >= 1) {
       if (coffeeToAddOrRemove[0].alreadyInCart == false) {
@@ -53,6 +68,8 @@ export function CarrinhoCompraContextProvider({
         id,
         amount,
         alreadyInCart: true,
+        price: detailsOfCoffee[0].preco,
+        name: detailsOfCoffee[0].nome,
       });
     }
     setSelectedCoffees(addedCoffees);
@@ -61,9 +78,10 @@ export function CarrinhoCompraContextProvider({
   function increaseAmountOfCoffee(id: string) {
     let addedCoffees = selectedCoffees;
 
-    let savedCoffees = addedCoffees.filter((coffee) => coffee.id == id);
+    let savedCoffee = addedCoffees.filter((coffee) => coffee.id == id);
+    let detailsOfCoffee = coffees.filter((coffee) => coffee.id == id);
 
-    if (savedCoffees.length > 0) {
+    if (savedCoffee.length > 0) {
       addedCoffees = addedCoffees.map((coffee) => {
         if (coffee.id == id) {
           coffee.amount++;
@@ -75,6 +93,8 @@ export function CarrinhoCompraContextProvider({
         id: id,
         amount: 1,
         alreadyInCart: false,
+        price: detailsOfCoffee[0].preco,
+        name: detailsOfCoffee[0].nome,
       });
     }
 
@@ -102,7 +122,7 @@ export function CarrinhoCompraContextProvider({
 
   /**
    * useEffect responsável por salvar no localStorage todas as alterações
-   * realizadas no estado
+   * realizadas nos estados
    */
   useEffect(() => {
     const amount = selectedCoffees.length;
@@ -115,12 +135,29 @@ export function CarrinhoCompraContextProvider({
         stateJSON
       );
     }
+
+    const coffesInCart = selectedCoffees;
+    const totalDelivery =
+      coffesInCart.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.price * currentValue.amount;
+      }, 0) *
+      (10 / 100); //10%
+
+    const totalCoffees = coffesInCart.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue.price * currentValue.amount;
+    }, 0);
+
+    /**
+     * Continuar daqui, necessário adicionar os totais no localstorage
+     */
+    setTotalDeliveryPrice(totalDelivery);
+    setTotalPriceCoffees(totalCoffees);
   }, [selectedCoffees]);
 
   /**
-   * useEffect responsável por inserir os valores armazenados no localStorage
-   * dentro do estado no qual é armazenado os cafés selecionados isso faz
-   * com que sempre que entrarmos em alguma página seja disponibilizado os cafés
+   * useEffect responsável por ler os dados do localStorage e armazenar os mesmos
+   * de volta nos seus respectivos estados afim de poder utilizar os mesmos estados
+   * em diversas partes do projeto
    */
   useEffect(() => {
     const localSelectedCoffees = localStorage.getItem(
@@ -145,6 +182,7 @@ export function CarrinhoCompraContextProvider({
         decreaseAmountOfCoffee,
         increaseAmountOfCoffee,
         amountSelectedCoffees,
+        totals,
       }}
     >
       {children}

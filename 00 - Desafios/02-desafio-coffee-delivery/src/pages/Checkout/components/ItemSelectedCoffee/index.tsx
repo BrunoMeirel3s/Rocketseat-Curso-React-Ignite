@@ -21,48 +21,27 @@ import imgHavaiano from "../../../../assets/coffees/havaiano.svg";
 import imgArabe from "../../../../assets/coffees/arabe.svg";
 import imgIrlandes from "../../../../assets/coffees/irlandes.svg";
 
-import { coffees } from "../../../../mocks/coffeeList";
-
 import { Coffee, Trash } from "phosphor-react";
-import { useEffect, useState } from "react";
 
 interface ItemSelectedCofeeProps {
   imagem: string;
   quantidade: number;
+  nome: string;
+  preco: number;
   addRemoveCoffeeToCart: (id: string, amount: number) => void;
   increaseAmountOfCoffee: (id: string) => void;
   decreaseAmountOfCoffee: (id: string) => void;
 }
 
-interface detailedCoffee {
-  id: string;
-  imagem: string;
-  tipo: string[];
-  info: string;
-  preco: number;
-}
-
 export function ItemSelectedCoffee({
   imagem,
   quantidade,
+  preco,
+  nome,
   addRemoveCoffeeToCart,
   increaseAmountOfCoffee,
   decreaseAmountOfCoffee,
 }: ItemSelectedCofeeProps) {
-  const [coffeeName, setCoffeeName] = useState("");
-
-  /**
-   *Busca os detalhes do café diretamente do arquivo original
-   *com a descrição do mesmo
-   */
-  const coffeeWithDetail = coffees.filter(
-    (coffee: detailedCoffee) => coffee.id == imagem
-  );
-
-  useEffect(() => {
-    setCoffeeName(coffeeWithDetail[0].nome);
-  }, []);
-
   function addOrRemoveCoffee() {
     addRemoveCoffeeToCart(imagem, quantidade);
   }
@@ -132,7 +111,7 @@ export function ItemSelectedCoffee({
           )}
         </ContainerImage>
         <ContainerAmount>
-          <div className="caffeeName">{coffeeName}</div>
+          <div className="caffeeName">{nome}</div>
           <div className="containerButtons">
             <div className="buttonAmount">
               <button onClick={decreaseAmount}>-</button>
@@ -147,7 +126,7 @@ export function ItemSelectedCoffee({
         </ContainerAmount>
         <ContainerPrice>
           <span>
-            {(quantidade * coffeeWithDetail[0].preco).toLocaleString("pt-BR", {
+            {(quantidade * preco).toLocaleString("pt-BR", {
               style: "currency",
               currency: "BRL",
             })}

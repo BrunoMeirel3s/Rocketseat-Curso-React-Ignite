@@ -24,19 +24,6 @@ export function Checkout() {
     decreaseAmountOfCoffee,
   } = useContext(CarrinhoCompraContext);
 
-  /**
-   * Continuar daqui
-   */
-  const filteredDetailedCoffees = coffees.filter((detailedCoffee) => {
-    selectedCoffees.map((coffee) => {
-      if (detailedCoffee.id === coffee.id) {
-        return detailedCoffee;
-      }
-    });
-  });
-
-  console.log(filteredDetailedCoffees);
-
   return (
     <ContainerCheckout>
       <ContainerCompletePedido>
@@ -111,8 +98,11 @@ export function Checkout() {
           {selectedCoffees.map((coffee) => {
             return (
               <ItemSelectedCoffee
+                key={coffee.id}
                 imagem={coffee.id}
                 quantidade={coffee.amount}
+                nome={coffee.name}
+                preco={coffee.price}
                 addRemoveCoffeeToCart={addRemoveCoffeeToCart}
                 increaseAmountOfCoffee={increaseAmountOfCoffee}
                 decreaseAmountOfCoffee={decreaseAmountOfCoffee}
