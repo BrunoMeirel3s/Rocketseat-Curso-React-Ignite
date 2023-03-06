@@ -12,7 +12,7 @@ interface Coffee {
 
 interface Totals {
   totalDeliveryPrice: number;
-  totalPriceCoffees: number;
+  totalCoffeesPrice: number;
 }
 
 interface CarrinhoCompraContextType {
@@ -21,7 +21,7 @@ interface CarrinhoCompraContextType {
   decreaseAmountOfCoffee: (id: string) => void;
   increaseAmountOfCoffee: (id: string) => void;
   amountSelectedCoffees: number;
-  totals: Totals[];
+  totals: Totals;
 }
 
 export const CarrinhoCompraContext = createContext(
@@ -40,7 +40,7 @@ export function CarrinhoCompraContextProvider({
 
   const [totalDeliveryPrice, setTotalDeliveryPrice] = useState<number>(0);
   const [totalPriceCoffees, setTotalPriceCoffees] = useState<number>(0);
-  const [totals, setTotals] = useState<Totals[]>([]);
+  const [totals, setTotals] = useState<Totals>({} as Totals);
 
   function addRemoveCoffeeToCart(id: string, amount: number) {
     let addedCoffees = selectedCoffees;
@@ -61,6 +61,17 @@ export function CarrinhoCompraContextProvider({
       } else {
         //Remove um café que já está no carrinho
         addedCoffees = addedCoffees.filter((coffee) => coffee.id !== id);
+
+        /**
+         * Remove o café do localStorage direto aqui pois identifiquei que
+         * o último café não removia, por conta da validação do tamanho do estado
+         * que é feita no useEffect, porém sem essa validação o estado inicia vazio
+         * e acaba guardando vazio no localStorage
+         */
+        localStorage.setItem(
+          "@ignite-coffee-delivery:selectedCoffees",
+          JSON.stringify(addedCoffees)
+        );
       }
     } else {
       //Adiciona o café no carrinho caso o mesmo já não esteja
@@ -134,24 +145,26 @@ export function CarrinhoCompraContextProvider({
         "@ignite-coffee-delivery:selectedCoffees",
         stateJSON
       );
-    }
 
-    const coffesInCart = selectedCoffees;
-    const totalDelivery =
-      coffesInCart.reduce((accumulator, currentValue) => {
+      const coffesInCart = selectedCoffees;
+      const totalDelivery =
+        coffesInCart.reduce((accumulator, currentValue) => {
+          return accumulator + currentValue.price * currentValue.amount;
+        }, 0) *
+        (10 / 100); //10%
+
+      const totalCoffees = coffesInCart.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.price * currentValue.amount;
-      }, 0) *
-      (10 / 100); //10%
+      }, 0);
 
-    const totalCoffees = coffesInCart.reduce((accumulator, currentValue) => {
-      return accumulator + currentValue.price * currentValue.amount;
-    }, 0);
+      setTotals({
+        totalDeliveryPrice: totalDelivery,
+        totalCoffeesPrice: totalCoffees,
+      });
 
-    /**
-     * Continuar daqui, necessário adicionar os totais no localstorage
-     */
-    setTotalDeliveryPrice(totalDelivery);
-    setTotalPriceCoffees(totalCoffees);
+      const totaisJSON = JSON.stringify(totals);
+      localStorage.setItem("@ignite-coffee-delivery:totals", totaisJSON);
+    }
   }, [selectedCoffees]);
 
   /**
@@ -167,10 +180,20 @@ export function CarrinhoCompraContextProvider({
     if (localSelectedCoffees) {
       let filteredLocalSelectedCoffees = JSON.parse(localSelectedCoffees);
 
+      /**
+       * Trás para o checkout apenas cafés que tenham sido adicionados no
+       * carrinho
+       */
       filteredLocalSelectedCoffees = filteredLocalSelectedCoffees.filter(
         (coffee: Coffee) => coffee.alreadyInCart === true
       );
       setSelectedCoffees(filteredLocalSelectedCoffees);
+    }
+
+    const localTotals = localStorage.getItem("@ignite-coffee-delivery:totals");
+    if (localTotals) {
+      let parsedTotals = JSON.parse(localTotals);
+      setTotals(parsedTotals);
     }
   }, []);
 

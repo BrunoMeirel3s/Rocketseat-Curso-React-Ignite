@@ -19,6 +19,7 @@ import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
 export function Checkout() {
   const {
     selectedCoffees,
+    totals,
     addRemoveCoffeeToCart,
     increaseAmountOfCoffee,
     decreaseAmountOfCoffee,
@@ -113,15 +114,32 @@ export function Checkout() {
             <div className="totalizadores">
               <div>
                 <span>Total de itens</span>
-                <span>R$29,70</span>
+                <span>
+                  {totals?.totalCoffeesPrice?.toLocaleString("pt-Br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </span>
               </div>
               <div>
                 <span>Entrega</span>
-                <span>R$3,50</span>
+                <span>
+                  {totals?.totalDeliveryPrice?.toLocaleString("pt-Br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </span>
               </div>
               <div id="totalFinal">
                 <span>Total</span>
-                <span>R$33,20</span>
+                <span>
+                  {(
+                    totals?.totalCoffeesPrice + totals.totalDeliveryPrice
+                  )?.toLocaleString("pt-Br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </span>
               </div>
             </div>
             <div className="botaoConfirmar">
