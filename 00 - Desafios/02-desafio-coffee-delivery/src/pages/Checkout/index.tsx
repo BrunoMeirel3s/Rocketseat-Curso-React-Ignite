@@ -16,6 +16,26 @@ import {
 import { useContext } from "react";
 import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
 
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+
+const SchemaAddreeDelivery = yup.object().shape({
+  cep: yup
+    .string()
+    .required("")
+    .min(8, "Informe um CEP válido para prosseguir"),
+  rua: yup.string().required("").min(10, "Informe a rua"),
+  numero: yup.string().required("").min(1, "Informe o número"),
+  bairro: yup.string().required("").min(4, "Informe o bairro"),
+  cidade: yup.string().required("").min(4, "Informe a cidade"),
+  uf: yup
+    .string()
+    .required("")
+    .min(2, "Informe seu estado")
+    .max(2, "Informe somente os 2 dígitos do estado"),
+});
+
 export function Checkout() {
   const {
     selectedCoffees,
@@ -24,6 +44,19 @@ export function Checkout() {
     increaseAmountOfCoffee,
     decreaseAmountOfCoffee,
   } = useContext(CarrinhoCompraContext);
+
+  const { handleSubmit, register, watch, formState } = useForm({
+    resolver: yupResolver(SchemaAddreeDelivery),
+  });
+
+  const { errors } = formState;
+
+  const onSubmit = (data) => {
+    console.log(errors);
+    console.log(data);
+  };
+
+  watch(() => {});
 
   return (
     <ContainerCheckout>
@@ -42,27 +75,59 @@ export function Checkout() {
               </span>
             </div>
           </div>
-          <form>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            id="FormularioEnderecoEntrega"
+          >
             <ContainerFormEndereco>
               <input
                 type="text"
                 placeholder="CEP"
                 style={{ maxWidth: "12.5rem" }}
+                className={errors && errors?.cep ? "inputInvalid" : ""}
+                {...register("cep")}
               />
               <input
                 type="text"
                 placeholder="Rua"
                 style={{ maxWidth: "100%" }}
+                className={errors && errors?.rua ? "inputInvalid" : ""}
+                {...register("rua")}
               />
 
               <div className="containerTwoInputs">
-                <input type="text" placeholder="Número" />
-                <input type="text" placeholder="Complemento" />
+                <input
+                  type="text"
+                  placeholder="Número"
+                  className={errors && errors?.numero ? "inputInvalid" : ""}
+                  {...register("numero")}
+                />
+                <input
+                  type="text"
+                  placeholder="Complemento"
+                  {...register("complemento")}
+                />
               </div>
               <div className="containerThreeInputs">
-                <input type="text" placeholder="Bairro" />
-                <input type="text" placeholder="Cidade" />
-                <input type="text" placeholder="UF" maxLength={2} />
+                <input
+                  type="text"
+                  placeholder="Bairro"
+                  className={errors && errors?.bairro ? "inputInvalid" : ""}
+                  {...register("bairro")}
+                />
+                <input
+                  type="text"
+                  placeholder="Cidade"
+                  className={errors && errors?.cidade ? "inputInvalid" : ""}
+                  {...register("cidade")}
+                />
+                <input
+                  type="text"
+                  placeholder="UF"
+                  maxLength={2}
+                  className={errors && errors?.uf ? "inputInvalid" : ""}
+                  {...register("uf")}
+                />
               </div>
             </ContainerFormEndereco>
           </form>
@@ -143,7 +208,9 @@ export function Checkout() {
               </div>
             </div>
             <div className="botaoConfirmar">
-              <button>CONFIRMAR PEDIDO</button>
+              <button type="submit" form="FormularioEnderecoEntrega">
+                CONFIRMAR PEDIDO
+              </button>
             </div>
           </ContainerTotais>
         </ContainerConfirmarPedido>

@@ -37,9 +37,6 @@ export function CarrinhoCompraContextProvider({
 }: CarrinhoCompraContextProps) {
   const [selectedCoffees, setSelectedCoffees] = useState<Coffee[]>([]);
   const [amountSelectedCoffees, setAmountSelectedCoffees] = useState<number>(0);
-
-  const [totalDeliveryPrice, setTotalDeliveryPrice] = useState<number>(0);
-  const [totalPriceCoffees, setTotalPriceCoffees] = useState<number>(0);
   const [totals, setTotals] = useState<Totals>({} as Totals);
 
   function addRemoveCoffeeToCart(id: string, amount: number) {

@@ -75,6 +75,10 @@ export const ContainerFormEndereco = styled.div`
     grid-template-columns: 12.5rem 1fr 4rem;
     gap: 1rem;
   }
+
+  .inputInvalid {
+    border: 2px solid ${(props) => props.theme["purple-dark"]};
+  }
 `;
 
 export const ContainerPagamento = styled.div`
