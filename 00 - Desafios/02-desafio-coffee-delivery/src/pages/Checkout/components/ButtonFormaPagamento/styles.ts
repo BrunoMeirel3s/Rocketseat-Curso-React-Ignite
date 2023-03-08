@@ -31,4 +31,8 @@ export const ContainerButton = styled.div`
       filter: brightness(0.9);
     }
   }
+
+  .selected {
+    border: 1px solid ${(props) => props.theme["purple"]};
+  }
 `;

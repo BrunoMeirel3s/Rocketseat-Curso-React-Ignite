@@ -13,12 +13,12 @@ import {
   ContainerTotais,
 } from "./styles";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 const SchemaAddreeDelivery = yup.object().shape({
   cep: yup
@@ -36,6 +36,19 @@ const SchemaAddreeDelivery = yup.object().shape({
     .max(2, "Informe somente os 2 dígitos do estado"),
 });
 
+interface FormaPagamento {
+  formaPagamento: "credito" | "debito" | "dinheiro";
+}
+
+type FormEnderecoEntrega = {
+  cep: string;
+  rua: string;
+  numero: string;
+  bairro: string;
+  cidade: string;
+  uf: string;
+};
+
 export function Checkout() {
   const {
     selectedCoffees,
@@ -45,13 +58,19 @@ export function Checkout() {
     decreaseAmountOfCoffee,
   } = useContext(CarrinhoCompraContext);
 
+  const [formaPagamento, setFormaPagamento] = useState("");
   const { handleSubmit, register, watch, formState } = useForm({
     resolver: yupResolver(SchemaAddreeDelivery),
   });
 
   const { errors } = formState;
 
-  const onSubmit = (data) => {
+  function handleSelecionarFormaPagamento(formaPagamento: string) {
+    setFormaPagamento(formaPagamento);
+    console.log(formaPagamento);
+  }
+
+  const onSubmit: SubmitHandler<FormEnderecoEntrega> = (data) => {
     console.log(errors);
     console.log(data);
   };
@@ -149,12 +168,21 @@ export function Checkout() {
             <ButtonFormaPagamento
               formaPagamento="credito"
               label="CARTÃO DE CRÉDITO"
+              handleSelecionarFormaPagamento={handleSelecionarFormaPagamento}
+              actualFormaPagamento={formaPagamento}
             />
             <ButtonFormaPagamento
               formaPagamento="debito"
               label="CARTÃO DE DÉBITO"
+              handleSelecionarFormaPagamento={handleSelecionarFormaPagamento}
+              actualFormaPagamento={formaPagamento}
             />
-            <ButtonFormaPagamento formaPagamento="dinheiro" label="DINHEIRO" />
+            <ButtonFormaPagamento
+              formaPagamento="dinheiro"
+              label="DINHEIRO"
+              handleSelecionarFormaPagamento={handleSelecionarFormaPagamento}
+              actualFormaPagamento={formaPagamento}
+            />
           </div>
         </ContainerPagamento>
       </ContainerCompletePedido>

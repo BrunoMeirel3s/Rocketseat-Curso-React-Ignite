@@ -4,12 +4,26 @@ import { ContainerButton } from "./styles";
 interface ButtonFormaPagamentoProps {
   formaPagamento: "credito" | "debito" | "dinheiro";
   label: string;
+  handleSelecionarFormaPagamento: (string: string) => void;
+  actualFormaPagamento: string;
 }
 
-export function ButtonFormaPagamento({ label }: ButtonFormaPagamentoProps) {
+export function ButtonFormaPagamento({
+  label,
+  formaPagamento,
+  handleSelecionarFormaPagamento,
+  actualFormaPagamento,
+}: ButtonFormaPagamentoProps) {
+  function selecionarFormaPagamento() {
+    handleSelecionarFormaPagamento(formaPagamento);
+  }
   return (
     <ContainerButton>
-      <button>
+      <button
+        value={formaPagamento}
+        onClick={selecionarFormaPagamento}
+        className={actualFormaPagamento == formaPagamento ? "selected" : ""}
+      >
         <span className="icon">
           <CreditCard size={20} />
         </span>
