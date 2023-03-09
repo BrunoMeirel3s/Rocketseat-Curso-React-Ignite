@@ -2,6 +2,16 @@ import { Coffee } from "phosphor-react";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { coffees } from "../mocks/coffeeList";
 
+interface FormEnderecoEntrega {
+  cep: string;
+  rua: string;
+  numero: string;
+  bairro: string;
+  cidade: string;
+  uf: string;
+  complemento?: string;
+}
+
 interface Coffee {
   id: string;
   amount: number;
@@ -15,6 +25,13 @@ interface Totals {
   totalCoffeesPrice: number;
 }
 
+interface Order {
+  endereco: FormEnderecoEntrega;
+  coffees: Coffee[];
+  totals: Totals;
+  formaPagamento: string;
+}
+
 interface CarrinhoCompraContextType {
   selectedCoffees: Coffee[];
   addRemoveCoffeeToCart: (id: string, amount: number) => void;
@@ -22,6 +39,12 @@ interface CarrinhoCompraContextType {
   increaseAmountOfCoffee: (id: string) => void;
   amountSelectedCoffees: number;
   totals: Totals;
+  saveOrder: (
+    endereco: FormEnderecoEntrega,
+    coffees: Coffee[],
+    totals: Totals,
+    formaPagamento: string
+  ) => void;
 }
 
 export const CarrinhoCompraContext = createContext(
@@ -38,6 +61,7 @@ export function CarrinhoCompraContextProvider({
   const [selectedCoffees, setSelectedCoffees] = useState<Coffee[]>([]);
   const [amountSelectedCoffees, setAmountSelectedCoffees] = useState<number>(0);
   const [totals, setTotals] = useState<Totals>({} as Totals);
+  const [order, setOrder] = useState<Order>({} as Order);
 
   function addRemoveCoffeeToCart(id: string, amount: number) {
     let addedCoffees = selectedCoffees;
@@ -128,6 +152,19 @@ export function CarrinhoCompraContextProvider({
     setSelectedCoffees(addedCoffees);
   }
 
+  function saveOrder(
+    endereco: FormEnderecoEntrega,
+    coffees: Coffee[],
+    totals: Totals,
+    formaPagamento: string
+  ) {
+    setOrder({ endereco, coffees, totals, formaPagamento });
+
+    //Salva o estado em localStorage
+    const orderJSON = JSON.stringify(order);
+    localStorage.setItem("@ignite-coffee-delivery:order", orderJSON);
+  }
+
   /**
    * useEffect responsável por salvar no localStorage todas as alterações
    * realizadas nos estados
@@ -194,6 +231,14 @@ export function CarrinhoCompraContextProvider({
     }
   }, []);
 
+  useEffect(() => {
+    const localOrder = localStorage.getItem("@ignite-coffee-delivery:order");
+    if (localOrder) {
+      let parsedOrder = JSON.parse(localOrder);
+      setOrder(parsedOrder);
+    }
+  }, []);
+
   return (
     <CarrinhoCompraContext.Provider
       value={{
@@ -203,6 +248,7 @@ export function CarrinhoCompraContextProvider({
         increaseAmountOfCoffee,
         amountSelectedCoffees,
         totals,
+        saveOrder,
       }}
     >
       {children}

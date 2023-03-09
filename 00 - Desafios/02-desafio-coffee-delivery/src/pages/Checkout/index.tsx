@@ -19,6 +19,7 @@ import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const SchemaAddreeDelivery = yup.object().shape({
   cep: yup
@@ -47,6 +48,7 @@ type FormEnderecoEntrega = {
   bairro: string;
   cidade: string;
   uf: string;
+  complemento?: string;
 };
 
 export function Checkout() {
@@ -56,12 +58,14 @@ export function Checkout() {
     addRemoveCoffeeToCart,
     increaseAmountOfCoffee,
     decreaseAmountOfCoffee,
+    saveOrder,
   } = useContext(CarrinhoCompraContext);
 
   const [formaPagamento, setFormaPagamento] = useState("");
-  const { handleSubmit, register, watch, formState } = useForm({
-    resolver: yupResolver(SchemaAddreeDelivery),
-  });
+  const { handleSubmit, register, watch, formState } =
+    useForm<FormEnderecoEntrega>({
+      resolver: yupResolver(SchemaAddreeDelivery),
+    });
 
   const { errors } = formState;
 
@@ -70,9 +74,25 @@ export function Checkout() {
     console.log(formaPagamento);
   }
 
-  const onSubmit: SubmitHandler<FormEnderecoEntrega> = (data) => {
-    console.log(errors);
-    console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit = (data: FormEnderecoEntrega) => {
+    let endereco = {
+      rua: data.rua,
+      cep: data.cep,
+      numero: data.numero,
+      complemento: data.complemento,
+      bairro: data.bairro,
+      uf: data.uf,
+      cidade: data.cidade,
+    };
+
+    let coffees = selectedCoffees;
+    let total = totals;
+    let formPagamento = formaPagamento;
+
+    saveOrder(endereco, coffees, total, formPagamento);
+    navigate("/success", { replace: true });
   };
 
   watch(() => {});
