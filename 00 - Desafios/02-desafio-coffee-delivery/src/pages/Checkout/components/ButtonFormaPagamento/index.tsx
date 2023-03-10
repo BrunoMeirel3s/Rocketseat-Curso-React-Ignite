@@ -2,7 +2,7 @@ import { CreditCard } from "phosphor-react";
 import { ContainerButton } from "./styles";
 
 interface ButtonFormaPagamentoProps {
-  formaPagamento: "credito" | "debito" | "dinheiro";
+  formaPagamento: "Cartão de Crédito" | "Cartão de Débito" | "Dinheiro";
   label: string;
   handleSelecionarFormaPagamento: (string: string) => void;
   actualFormaPagamento: string;

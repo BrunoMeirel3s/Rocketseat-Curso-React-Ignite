@@ -7,8 +7,14 @@ import {
   ContainerMensagemPadrao,
   ContainerSuccess,
 } from "./styles";
+import { useContext, useEffect, useState } from "react";
+import { CarrinhoCompraContext } from "../../contexts/CarrinhoCompraContext";
 
 export function Success() {
+  const { order } = useContext(CarrinhoCompraContext);
+  useEffect(() => {
+    console.log(order);
+  }, []);
   return (
     <ContainerSuccess>
       <ContainerMensagemPadrao>
@@ -23,9 +29,15 @@ export function Success() {
             </div>
             <div className="informacao">
               <span>
-                Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                Entrega em{" "}
+                <strong>
+                  {order?.endereco?.rua}, {order?.endereco?.numero}
+                </strong>
               </span>
-              <span>Farrapos - Porto Alegre, RS</span>
+              <span>
+                {order?.endereco?.bairro} - {order?.endereco?.cidade},{" "}
+                {order?.endereco?.uf}
+              </span>
             </div>
           </div>
           <div className="itemDadoEntrega">
@@ -43,7 +55,7 @@ export function Success() {
             </div>
             <div className="informacao">
               <span>Pagamento na entrega</span>
-              <strong>Cartão de Crédito</strong>
+              <strong>{order?.formaPagamento}</strong>
             </div>
           </div>
         </div>

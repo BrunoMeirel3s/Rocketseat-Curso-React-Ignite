@@ -45,6 +45,7 @@ interface CarrinhoCompraContextType {
     totals: Totals,
     formaPagamento: string
   ) => void;
+  order: Order;
 }
 
 export const CarrinhoCompraContext = createContext(
@@ -114,7 +115,7 @@ export function CarrinhoCompraContextProvider({
     let detailsOfCoffee = coffees.filter((coffee) => coffee.id == id);
 
     if (savedCoffee.length > 0) {
-      addedCoffees = addedCoffees.map((coffee) => {
+      addedCoffees = selectedCoffees.map((coffee) => {
         if (coffee.id == id) {
           coffee.amount++;
         }
@@ -163,6 +164,10 @@ export function CarrinhoCompraContextProvider({
     //Salva o estado em localStorage
     const orderJSON = JSON.stringify(order);
     localStorage.setItem("@ignite-coffee-delivery:order", orderJSON);
+
+    localStorage.removeItem("@ignite-coffee-delivery:selectedCoffees");
+    localStorage.removeItem("@ignite-coffee-delivery:totals");
+    setSelectedCoffees({} as Coffee[]);
   }
 
   /**
@@ -249,6 +254,7 @@ export function CarrinhoCompraContextProvider({
         amountSelectedCoffees,
         totals,
         saveOrder,
+        order,
       }}
     >
       {children}

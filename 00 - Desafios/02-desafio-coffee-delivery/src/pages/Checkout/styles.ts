@@ -92,6 +92,12 @@ export const ContainerPagamento = styled.div`
     gap: 1rem;
     margin-top: 2rem;
   }
+
+  .mensagemErroFormaPagamento {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: ${(props) => props.theme["purple-dark"]};
+  }
 `;
 
 export const ContainerCafeSelecionado = styled.div`

@@ -116,7 +116,11 @@ export function CardCoffee({
       )}
       <div className="containerTipo">
         {tipo.map((tipo) => {
-          return <span className="tipo">{tipo}</span>;
+          return (
+            <span key={`${id}${tipo}`} className="tipo">
+              {tipo}
+            </span>
+          );
         })}
       </div>
 

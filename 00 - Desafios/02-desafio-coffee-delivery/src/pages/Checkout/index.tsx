@@ -37,10 +37,6 @@ const SchemaAddreeDelivery = yup.object().shape({
     .max(2, "Informe somente os 2 dígitos do estado"),
 });
 
-interface FormaPagamento {
-  formaPagamento: "credito" | "debito" | "dinheiro";
-}
-
 type FormEnderecoEntrega = {
   cep: string;
   rua: string;
@@ -62,6 +58,8 @@ export function Checkout() {
   } = useContext(CarrinhoCompraContext);
 
   const [formaPagamento, setFormaPagamento] = useState("");
+  const [formaPagamentoSelecionada, setFormaPagamentoSelecionada] =
+    useState(true);
   const { handleSubmit, register, watch, formState } =
     useForm<FormEnderecoEntrega>({
       resolver: yupResolver(SchemaAddreeDelivery),
@@ -70,8 +68,8 @@ export function Checkout() {
   const { errors } = formState;
 
   function handleSelecionarFormaPagamento(formaPagamento: string) {
+    setFormaPagamentoSelecionada(true);
     setFormaPagamento(formaPagamento);
-    console.log(formaPagamento);
   }
 
   const navigate = useNavigate();
@@ -91,8 +89,12 @@ export function Checkout() {
     let total = totals;
     let formPagamento = formaPagamento;
 
-    saveOrder(endereco, coffees, total, formPagamento);
-    navigate("/success", { replace: true });
+    if (formaPagamento != "") {
+      saveOrder(endereco, coffees, total, formPagamento);
+      navigate("/success", { replace: true });
+    } else {
+      setFormaPagamentoSelecionada(false);
+    }
   };
 
   watch(() => {});
@@ -186,24 +188,29 @@ export function Checkout() {
           </div>
           <div className="containerOpcoesPagamento">
             <ButtonFormaPagamento
-              formaPagamento="credito"
+              formaPagamento="Cartão de Crédito"
               label="CARTÃO DE CRÉDITO"
               handleSelecionarFormaPagamento={handleSelecionarFormaPagamento}
               actualFormaPagamento={formaPagamento}
             />
             <ButtonFormaPagamento
-              formaPagamento="debito"
+              formaPagamento="Cartão de Débito"
               label="CARTÃO DE DÉBITO"
               handleSelecionarFormaPagamento={handleSelecionarFormaPagamento}
               actualFormaPagamento={formaPagamento}
             />
             <ButtonFormaPagamento
-              formaPagamento="dinheiro"
+              formaPagamento="Dinheiro"
               label="DINHEIRO"
               handleSelecionarFormaPagamento={handleSelecionarFormaPagamento}
               actualFormaPagamento={formaPagamento}
             />
           </div>
+          {!formaPagamentoSelecionada && (
+            <div className="mensagemErroFormaPagamento">
+              <span>Selecione uma das formas de pagamento</span>
+            </div>
+          )}
         </ContainerPagamento>
       </ContainerCompletePedido>
       <ContainerCafeSelecionado>
