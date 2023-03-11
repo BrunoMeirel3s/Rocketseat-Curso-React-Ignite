@@ -15,7 +15,8 @@ import imgCubano from "../../../../assets/coffees/cubano.svg";
 import imgHavaiano from "../../../../assets/coffees/havaiano.svg";
 import imgArabe from "../../../../assets/coffees/arabe.svg";
 import imgIrlandes from "../../../../assets/coffees/irlandes.svg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { CarrinhoCompraContext } from "../../../../contexts/CarrinhoCompraContext";
 
 interface CoffeeAtCart {
   id: string;
@@ -30,10 +31,18 @@ interface CardCoffeeProps {
   info?: string;
   preco: number;
   addRemoveCoffeeToCart: (id: string, amount: number) => void;
-  selectedCoffees: CoffeeAtCart[];
   increaseAmountOfCoffee: (id: string) => void;
   decreaseAmountOfCoffee: (id: string) => void;
 }
+
+interface Coffee {
+  id: string;
+  amount: number;
+  alreadyInCart: boolean;
+  price: number;
+  name: string;
+}
+
 export function CardCoffee({
   id,
   tipo,
@@ -41,36 +50,29 @@ export function CardCoffee({
   info,
   preco,
   addRemoveCoffeeToCart,
-  selectedCoffees,
   increaseAmountOfCoffee,
   decreaseAmountOfCoffee,
 }: CardCoffeeProps) {
+  const { selectedCoffees } = useContext(CarrinhoCompraContext);
+  const [coffee, setCoffee] = useState({} as Coffee);
+
   function addRemoveCoffee() {
-    addRemoveCoffeeToCart(id, amountCoffee);
+    addRemoveCoffeeToCart(id, coffee.amount);
   }
 
   function increaseCoffee() {
     increaseAmountOfCoffee(id);
+
+    let actualCoffee = selectedCoffees.filter((c) => c.id == id);
+    setCoffee(actualCoffee[0]);
   }
 
   function decreaseCoffee() {
     decreaseAmountOfCoffee(id);
+
+    let actualCoffee = selectedCoffees.filter((c) => c.id == id);
+    setCoffee(actualCoffee[0]);
   }
-
-  const [amountCoffee, setAmountCoffee] = useState(0);
-
-  const coffeesAtCart = selectedCoffees;
-
-  let coffeeAmount = 0;
-  coffeesAtCart.map((coffee) => {
-    if (coffee.id == id) {
-      coffeeAmount = coffee.amount;
-    }
-  });
-
-  useEffect(() => {
-    setAmountCoffee(coffeeAmount);
-  }, [selectedCoffees]);
 
   return (
     <ContainerCardCoffee>
@@ -137,7 +139,7 @@ export function CardCoffee({
         </div>
         <div className="amount">
           <button onClick={decreaseCoffee}>-</button>
-          <span>{amountCoffee}</span>
+          <span>{coffee?.amount ? coffee.amount : 0}</span>
           <button onClick={increaseCoffee}>+</button>
         </div>
         <div className="cart">

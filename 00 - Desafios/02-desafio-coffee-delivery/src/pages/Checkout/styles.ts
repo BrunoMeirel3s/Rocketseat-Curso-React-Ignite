@@ -64,6 +64,10 @@ export const ContainerFormEndereco = styled.div`
     color: ${(props) => props.theme["base-text"]};
   }
 
+  input:focus {
+    border: 1px solid ${(props) => props.theme["yellow-dark"]};
+  }
+
   .containerTwoInputs {
     display: grid;
     grid-template-columns: 12.5rem 1fr;

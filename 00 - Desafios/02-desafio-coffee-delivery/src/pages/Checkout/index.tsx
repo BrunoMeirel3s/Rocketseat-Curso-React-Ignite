@@ -235,30 +235,63 @@ export function Checkout() {
               <div>
                 <span>Total de itens</span>
                 <span>
-                  {totals?.totalCoffeesPrice?.toLocaleString("pt-Br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
+                  {selectedCoffees.length >= 1 ? (
+                    <>
+                      {totals?.totalCoffeesPrice?.toLocaleString("pt-Br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </>
+                  ) : (
+                    <>
+                      {Number(0).toLocaleString("pt-Br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </>
+                  )}
                 </span>
               </div>
               <div>
                 <span>Entrega</span>
                 <span>
-                  {totals?.totalDeliveryPrice?.toLocaleString("pt-Br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
+                  {selectedCoffees.length >= 1 ? (
+                    <>
+                      {totals?.totalDeliveryPrice?.toLocaleString("pt-Br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </>
+                  ) : (
+                    <>
+                      {Number(0).toLocaleString("pt-Br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </>
+                  )}
                 </span>
               </div>
               <div id="totalFinal">
                 <span>Total</span>
                 <span>
-                  {(
-                    totals?.totalCoffeesPrice + totals.totalDeliveryPrice
-                  )?.toLocaleString("pt-Br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
+                  {selectedCoffees.length >= 1 ? (
+                    <>
+                      {(
+                        totals?.totalCoffeesPrice + totals.totalDeliveryPrice
+                      )?.toLocaleString("pt-Br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </>
+                  ) : (
+                    <>
+                      {Number(0).toLocaleString("pt-Br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </>
+                  )}
                 </span>
               </div>
             </div>

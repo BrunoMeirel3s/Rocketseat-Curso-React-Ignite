@@ -34,7 +34,6 @@ export function Home() {
                 tipo={coffee.tipo}
                 addRemoveCoffeeToCart={addRemoveCoffeeToCart}
                 increaseAmountOfCoffee={increaseAmountOfCoffee}
-                selectedCoffees={selectedCoffees}
                 decreaseAmountOfCoffee={decreaseAmountOfCoffee}
               />
             );

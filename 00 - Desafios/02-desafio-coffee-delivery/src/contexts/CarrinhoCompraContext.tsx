@@ -109,6 +109,7 @@ export function CarrinhoCompraContextProvider({
   }
 
   function increaseAmountOfCoffee(id: string) {
+    console.log("Teste");
     let addedCoffees = selectedCoffees;
 
     let savedCoffee = addedCoffees.filter((coffee) => coffee.id == id);
@@ -122,6 +123,7 @@ export function CarrinhoCompraContextProvider({
         return coffee;
       });
     } else {
+      console.log("teste 2");
       addedCoffees.push({
         id: id,
         amount: 1,
@@ -129,6 +131,7 @@ export function CarrinhoCompraContextProvider({
         price: detailsOfCoffee[0].preco,
         name: detailsOfCoffee[0].nome,
       });
+      console.log(addedCoffees);
     }
 
     setSelectedCoffees(addedCoffees);
