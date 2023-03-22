@@ -31,6 +31,11 @@ interface TransactionProviderProps {
 export function TransactionsProvider({ children }: TransactionProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
 
+  /**
+   * useCallback é utilizado para analisar a função e renderizar os components
+   * que a utilizam apenas se houver um alteração na função, evitando rerendering
+   * desnecessário
+   */
   const fetchTransactions = useCallback(async (query?: string) => {
     const response = await api.get('transactions', {
       params: {
@@ -66,7 +71,7 @@ export function TransactionsProvider({ children }: TransactionProviderProps) {
 
   useEffect(() => {
     fetchTransactions()
-  }, [])
+  }, [fetchTransactions])
   return (
     <TransactionsContext.Provider
       value={{ transactions, fetchTransactions, createTransaction }}

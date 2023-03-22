@@ -8,7 +8,12 @@ export function Header() {
     <HeaderContainer>
       <HeaderContent>
         <img src={logoImg} alt="Logotipo" />
-
+        {/**
+         * Dialog.Root especifica o local no qual ficará o modal da nova
+         * transação, Dialog.Trigger é o local do button que irá disparar o modal
+         * o NewTransactionModal é um styled-components que referencia
+         * o component de modal do radix e é ele que é exibido em tela
+         */}
         <Dialog.Root>
           <Dialog.Trigger asChild>
             <NewTransactionButton>Nova transação</NewTransactionButton>

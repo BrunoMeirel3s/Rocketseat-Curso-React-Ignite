@@ -24,6 +24,12 @@ const newTransactionFormSchema = z.object({
 type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>
 
 export function NewTransactionModal() {
+  /**
+   * O useContextSelector nos permite escolher quais os estados
+   * irão realizar a renderizaçã do componente, neste caso
+   * utilizaremos a function createTransaction, então apenas se ela mudar
+   * iremos atualizar este componente novamente
+   */
   const createTransaction = useContextSelector(
     TransactionsContext,
     (context) => {
@@ -58,7 +64,11 @@ export function NewTransactionModal() {
      */
     reset()
   }
-
+  /**
+   * Dialog.Portal irá renderizar o elemento fora do header no qual
+   * o mesmo se encontra, fazendo ele ter um escopo próprio
+   * dentro do HTML
+   */
   return (
     <Dialog.Portal>
       <Overlay />
