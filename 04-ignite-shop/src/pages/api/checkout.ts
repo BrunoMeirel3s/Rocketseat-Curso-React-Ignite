@@ -15,7 +15,7 @@ export default async function handler(
 
   const priceId = req.body.priceId;
 
-  const successUrl = `${process.env.NEXT_URL}/success`;
+  const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${process.env.NEXT_URL}/`;
 
   const checkoutSession = await stripe.checkout.sessions.create({
