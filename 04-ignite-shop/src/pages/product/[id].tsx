@@ -6,6 +6,7 @@ import {
 } from "@/styles/pages/products";
 import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -41,35 +42,51 @@ export default function Product({ product }: ProductProps) {
     }
   }
   const { query, isFallback } = useRouter();
+
   if (isFallback) {
     return <p>Loading.....</p>;
   }
   return (
-    <ProductContainer>
-      <ImageContainer>
-        <Image src={product.imageUrl} width={520} height={480} alt="" />
-      </ImageContainer>
-      <ProductDetails>
-        <h1>{product.name}</h1>
-        <span>{product.price}</span>
+    <>
+      <Head>
+        <title>{product.name} | Ignite Shop</title>
+      </Head>
+      <ProductContainer>
+        <ImageContainer>
+          <Image src={product.imageUrl} width={520} height={480} alt="" />
+        </ImageContainer>
+        <ProductDetails>
+          <h1>{product.name}</h1>
+          <span>{product.price}</span>
 
-        <p>{product.description}</p>
+          <p>{product.description}</p>
 
-        <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>
-          Comprar agora
-        </button>
-      </ProductDetails>
-    </ProductContainer>
+          <button
+            disabled={isCreatingCheckoutSession}
+            onClick={handleBuyProduct}
+          >
+            Comprar agora
+          </button>
+        </ProductDetails>
+      </ProductContainer>
+    </>
   );
 }
 
 export const getStaticPaths: GetStaticPaths = () => {
+  /**
+   * O getStatisPaths é utilizado juntamente ao getStatisProps para passar
+   * os ids que serão gerados no tempo do build, o fallback permite
+   * gerar a página caso não seja passado id aqui no getStatisProps,
+   * para casos de novas páginas ou algo neste sentido
+   */
   return {
     paths: [{ params: { id: "prod_Nf8ALDuNm5xQON" } }],
     fallback: true,
   };
 };
 
+//Utilizado para gerar a página em tempo de build, permitindo cachear a página
 export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
   params,
 }) => {
@@ -95,6 +112,6 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         defaultPriceId: price.id,
       },
     },
-    revalidate: 60 * 60 * 1, // 1 hour
+    revalidate: 60 * 60 * 1, // 1 hour /Seta o tempo de duração do cache da página
   };
 };
