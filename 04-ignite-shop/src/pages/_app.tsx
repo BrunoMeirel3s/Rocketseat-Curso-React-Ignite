@@ -2,9 +2,10 @@ import { globalStyles } from "@/styles/global";
 import { globalCss } from "../styles/index";
 import type { AppProps } from "next/app";
 import logoImg from "../asssets/logo.svg";
-import { Container, Header } from "@/styles/pages/app";
+import { ButtonCart, Container, Header } from "@/styles/pages/app";
 import Image from "next/image";
 import { CartProvider } from "use-shopping-cart";
+import { Handbag } from "phosphor-react";
 
 globalStyles();
 
@@ -22,6 +23,10 @@ export default function App({ Component, pageProps }: AppProps) {
           <a href="/">
             <Image src={logoImg} alt="" />
           </a>
+          <ButtonCart>
+            <Handbag size={24} />
+            <span className="amountItensCart">2</span>
+          </ButtonCart>
         </Header>
         <Component {...pageProps} />
       </Container>
