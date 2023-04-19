@@ -51,3 +51,32 @@ export const ButtonCart = styled("button", {
     fontWeight: "bold",
   },
 });
+
+export const MenuBag = styled("div", {
+  background: "$gray200",
+  width: "480px",
+  position: "absolute",
+  zIndex: 999,
+  top: "0px",
+  right: "0px",
+  height: "100%",
+  padding: "2rem 3rem 3rem 3rem",
+
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "end",
+
+    button: {
+      border: "none",
+      outline: "none",
+      cursor: "pointer",
+      background: "transparent",
+      color: "$gray100",
+    },
+  },
+
+  main: {
+    marginTop: "2rem",
+  },
+});

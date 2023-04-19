@@ -54,6 +54,26 @@ export const Product = styled("div", {
       fontWeight: "bold",
       color: "$green300",
     },
+
+    div: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    },
+
+    button: {
+      outline: "none",
+      background: "$green300",
+      color: "$white",
+      border: "none",
+      borderRadius: "6px",
+      width: "56px",
+      height: "56px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      cursor: "pointer",
+    },
   },
 
   "&:hover": {
