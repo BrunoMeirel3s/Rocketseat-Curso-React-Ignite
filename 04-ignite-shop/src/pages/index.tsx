@@ -10,6 +10,7 @@ import { Handbag } from "phosphor-react";
 import "keen-slider/keen-slider.min.css";
 import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
+import { useShoppingCart } from "use-shopping-cart";
 
 interface HomeProps {
   products: {
@@ -27,6 +28,9 @@ export default function Home({ products }: HomeProps) {
       spacing: 48,
     },
   });
+  const { addItem } = useShoppingCart();
+
+  function handleAddItem(product: any) {}
 
   return (
     <>
@@ -48,7 +52,11 @@ export default function Home({ products }: HomeProps) {
                     <strong>{product.name}</strong>
                     <span>{product.price}</span>
                   </div>
-                  <button>
+                  <button
+                    onClick={() => {
+                      console.log(product);
+                    }}
+                  >
                     <Handbag size={28} />
                   </button>
                 </footer>
