@@ -12,13 +12,15 @@ import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
 import { useShoppingCart } from "use-shopping-cart";
 
+interface Product {
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: number;
+}
+
 interface HomeProps {
-  products: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: number;
-  }[];
+  products: Product[];
 }
 
 export default function Home({ products }: HomeProps) {
@@ -30,7 +32,15 @@ export default function Home({ products }: HomeProps) {
   });
   const { addItem } = useShoppingCart();
 
-  function handleAddItem(product: any) {}
+  function handleAddItem(product: Product) {
+    addItem({
+      name: product.name,
+      id: product.id,
+      price: product.price,
+      image: product.imageUrl,
+      currency: "BRL",
+    });
+  }
 
   return (
     <>
@@ -40,28 +50,28 @@ export default function Home({ products }: HomeProps) {
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map((product) => {
           return (
-            <Link
-              href={`/product/${product.id}`}
-              key={product.id}
-              prefetch={false}
-            >
-              <Product className="keen-slider__slide">
-                <Image src={product.imageUrl} width={520} height={480} alt="" />
-                <footer>
+            <Product className="keen-slider__slide">
+              <Image src={product.imageUrl} width={520} height={480} alt="" />
+              <footer>
+                <Link
+                  href={`/product/${product.id}`}
+                  key={product.id}
+                  prefetch={false}
+                >
                   <div>
                     <strong>{product.name}</strong>
                     <span>{product.price}</span>
                   </div>
-                  <button
-                    onClick={() => {
-                      console.log(product);
-                    }}
-                  >
-                    <Handbag size={28} />
-                  </button>
-                </footer>
-              </Product>
-            </Link>
+                </Link>
+                <button
+                  onClick={() => {
+                    handleAddItem(product);
+                  }}
+                >
+                  <Handbag size={28} />
+                </button>
+              </footer>
+            </Product>
           );
         })}
       </HomeContainer>

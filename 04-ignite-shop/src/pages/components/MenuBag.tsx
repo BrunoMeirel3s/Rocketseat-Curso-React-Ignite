@@ -16,10 +16,11 @@ interface MenuProps {
 }
 
 export default function Menu({ handleOpenCloseMenu }: MenuProps) {
-  const { totalPrice, cartCount, redirectToCheckout } = useShoppingCart();
+  const { totalPrice, cartCount, redirectToCheckout, cartDetails } =
+    useShoppingCart();
 
   useEffect(() => {
-    console.log(cartCount);
+    console.log(cartDetails);
   }, []);
 
   return (
@@ -33,6 +34,21 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
         <main>
           <h3>Sacola de compras</h3>
           <ContainerCamisetas>
+            {cartDetails &&
+              cartDetails.map((camiseta) => {
+                return (
+                  <Camiseta>
+                    <div className="containerImage">
+                      <Image src={imgCamiseta} alt="" width={94} />
+                    </div>
+                    <div className="containerInfos">
+                      <span>Camiseta Beyond the Limits</span>
+                      <h3>R$ 79,90</h3>
+                      <button>Remover</button>
+                    </div>
+                  </Camiseta>
+                );
+              })}
             <Camiseta>
               <div className="containerImage">
                 <Image src={imgCamiseta} alt="" width={94} />
@@ -67,10 +83,13 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
         </main>
         <ContainerRodape>
           <div>
-            <span>Quantidade</span> <span>3 itens</span>
+            <span>Quantidade</span>{" "}
+            <span>
+              {cartCount} {cartCount && cartCount > 1 ? "itens" : "item"}
+            </span>
           </div>
           <div>
-            <strong>Valor Total</strong> <span>R$ 270,00</span>
+            <strong>Valor Total</strong> <span>{totalPrice}</span>
           </div>
           <button>Finalizar Compra</button>
         </ContainerRodape>

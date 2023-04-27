@@ -11,16 +11,19 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Stripe from "stripe";
+import { useShoppingCart } from "use-shopping-cart";
+
+interface Product {
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: number;
+  description: string;
+  defaultPriceId: string;
+}
 
 interface ProductProps {
-  product: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: string;
-    description: string;
-    defaultPriceId: string;
-  };
+  product: Product;
 }
 export default function Product({ product }: ProductProps) {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
@@ -43,6 +46,18 @@ export default function Product({ product }: ProductProps) {
   }
   const { query, isFallback } = useRouter();
 
+  const { addItem } = useShoppingCart();
+
+  function handleAddItem(product: Product) {
+    addItem({
+      name: product.name,
+      id: product.id,
+      price: product.price,
+      image: product.imageUrl,
+      currency: "BRL",
+    });
+  }
+
   if (isFallback) {
     return <p>Loading.....</p>;
   }
@@ -63,7 +78,9 @@ export default function Product({ product }: ProductProps) {
 
           <button
             disabled={isCreatingCheckoutSession}
-            onClick={handleBuyProduct}
+            onClick={() => {
+              handleAddItem(product);
+            }}
           >
             Colocar na sacola
           </button>

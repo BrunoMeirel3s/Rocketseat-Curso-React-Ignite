@@ -15,7 +15,7 @@ export const Product = styled("div", {
     "linear-gradient(183deg, rgba(30,164,131,1) 0%, rgba(116,101,212,1) 100%);",
   borderRadius: 8,
   //padding: "0.25rem",
-  cursor: "pointer",
+  //cursor: "pointer",
   position: "relative",
   overflow: "hidden",
 
@@ -56,6 +56,10 @@ export const Product = styled("div", {
       color: "$green300",
     },
 
+    a: {
+      textDecoration: "none",
+    },
+
     div: {
       display: "flex",
       flexDirection: "column",
@@ -74,6 +78,10 @@ export const Product = styled("div", {
       justifyContent: "center",
       alignItems: "center",
       cursor: "pointer",
+
+      "&:hover": {
+        filter: "brightness(0.9)",
+      },
     },
   },
 
