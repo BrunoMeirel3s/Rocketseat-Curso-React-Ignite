@@ -9,19 +9,53 @@ import {
 import Image from "next/image";
 import imgCamiseta from "../../asssets/camisetas/1.png";
 import { useShoppingCart } from "use-shopping-cart";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { MouseEvent } from "react";
 
 interface MenuProps {
   handleOpenCloseMenu: () => void;
 }
 
+interface Product {
+  name: string;
+  id: string;
+  price: number;
+  image?: string;
+}
+
 export default function Menu({ handleOpenCloseMenu }: MenuProps) {
-  const { totalPrice, cartCount, redirectToCheckout, cartDetails } =
+  const { totalPrice, cartCount, redirectToCheckout, cartDetails, removeItem } =
     useShoppingCart();
 
+  const [products, setProducts] = useState<Product[]>([]);
+
+  async function handleFinalizarCompra(event: MouseEvent) {
+    event.preventDefault();
+
+    if (cartCount! >= 1) {
+      try {
+        const result = await redirectToCheckout();
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
   useEffect(() => {
-    console.log(cartDetails);
-  }, []);
+    const productsCart = Object.values(cartDetails!);
+
+    const productsLocalCart = productsCart.map((product) => {
+      return {
+        name: product.name,
+        id: product.id,
+        price: product.price,
+        image: product.image,
+      };
+    });
+
+    setProducts(productsLocalCart);
+  }, [cartDetails]);
 
   return (
     <>
@@ -34,51 +68,31 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
         <main>
           <h3>Sacola de compras</h3>
           <ContainerCamisetas>
-            {cartDetails &&
-              cartDetails.map((camiseta) => {
-                return (
-                  <Camiseta>
-                    <div className="containerImage">
-                      <Image src={imgCamiseta} alt="" width={94} />
-                    </div>
-                    <div className="containerInfos">
-                      <span>Camiseta Beyond the Limits</span>
-                      <h3>R$ 79,90</h3>
-                      <button>Remover</button>
-                    </div>
-                  </Camiseta>
-                );
-              })}
-            <Camiseta>
-              <div className="containerImage">
-                <Image src={imgCamiseta} alt="" width={94} />
-              </div>
-              <div className="containerInfos">
-                <span>Camiseta Beyond the Limits</span>
-                <h3>R$ 79,90</h3>
-                <button>Remover</button>
-              </div>
-            </Camiseta>
-            <Camiseta>
-              <div className="containerImage">
-                <Image src={imgCamiseta} alt="" width={94} />
-              </div>
-              <div className="containerInfos">
-                <span>Camiseta Beyond the Limits</span>
-                <h3>R$ 79,90</h3>
-                <button>Remover</button>
-              </div>
-            </Camiseta>
-            <Camiseta>
-              <div className="containerImage">
-                <Image src={imgCamiseta} alt="" width={94} />
-              </div>
-              <div className="containerInfos">
-                <span>Camiseta Beyond the Limits</span>
-                <h3>R$ 79,90</h3>
-                <button>Remover</button>
-              </div>
-            </Camiseta>
+            {products.map((product) => {
+              return (
+                <Camiseta key={product.id}>
+                  <div className="containerImage">
+                    <Image
+                      src={product?.image!}
+                      alt=""
+                      width={94}
+                      height={94}
+                    />
+                  </div>
+                  <div className="containerInfos">
+                    <span>{product.name}</span>
+                    <h3>{product.price}</h3>
+                    <button
+                      onClick={() => {
+                        removeItem(product.id);
+                      }}
+                    >
+                      Remover
+                    </button>
+                  </div>
+                </Camiseta>
+              );
+            })}
           </ContainerCamisetas>
         </main>
         <ContainerRodape>
@@ -91,7 +105,13 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
           <div>
             <strong>Valor Total</strong> <span>{totalPrice}</span>
           </div>
-          <button>Finalizar Compra</button>
+          <button
+            onClick={(e: MouseEvent) => {
+              handleFinalizarCompra(e);
+            }}
+          >
+            Finalizar Compra
+          </button>
         </ContainerRodape>
       </MenuBag>
     </>
