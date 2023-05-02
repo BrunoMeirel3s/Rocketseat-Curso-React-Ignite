@@ -129,6 +129,6 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         defaultPriceId: price.id,
       },
     },
-    revalidate: 60 * 60 * 1, // 1 hour /Seta o tempo de duração do cache da página
+    revalidate: 60 * 60 * 1, // 1 hour - Seta o tempo de duração do cache da página
   };
 };

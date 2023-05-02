@@ -7,7 +7,7 @@ export const MenuBag = styled("div", {
   zIndex: 999,
   top: "0px",
   right: "0px",
-  height: "100%",
+  minHeight: "100vh",
   padding: "2rem 3rem 3rem 3rem",
   borderRadius: "0 0 8px 8px",
 

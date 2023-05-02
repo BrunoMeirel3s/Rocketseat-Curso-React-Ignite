@@ -17,6 +17,7 @@ interface Product {
   name: string;
   imageUrl: string;
   price: number;
+  formattedPrice: number;
 }
 
 interface HomeProps {
@@ -51,7 +52,7 @@ export default function Home({ products }: HomeProps) {
         {products.map((product) => {
           return (
             <Product className="keen-slider__slide" key={product.id}>
-              <Image src={product.imageUrl} width={520} height={480} alt="" />
+              <Image src={product.imageUrl} width={500} height={460} alt="" />
               <footer>
                 <Link
                   href={`/product/${product.id}`}
@@ -60,7 +61,7 @@ export default function Home({ products }: HomeProps) {
                 >
                   <div>
                     <strong>{product.name}</strong>
-                    <span>{product.price}</span>
+                    <span>{product.formattedPrice}</span>
                   </div>
                 </Link>
                 <button
@@ -97,7 +98,8 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat("pt-BR", {
+      price: price.unit_amount,
+      formattedPrice: new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
       }).format(price?.unit_amount ? price?.unit_amount / 100 : 0),

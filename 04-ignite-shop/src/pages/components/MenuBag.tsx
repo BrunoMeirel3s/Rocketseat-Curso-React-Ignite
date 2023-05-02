@@ -7,7 +7,6 @@ import {
 } from "../../styles/components/MenuBag";
 
 import Image from "next/image";
-import imgCamiseta from "../../asssets/camisetas/1.png";
 import { useShoppingCart } from "use-shopping-cart";
 import { useEffect, useState } from "react";
 import { MouseEvent } from "react";
@@ -31,6 +30,8 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
 
   async function handleFinalizarCompra(event: MouseEvent) {
     event.preventDefault();
+
+    console.log(cartDetails);
 
     if (cartCount! >= 1) {
       try {
@@ -81,7 +82,12 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
                   </div>
                   <div className="containerInfos">
                     <span>{product.name}</span>
-                    <h3>{product.price}</h3>
+                    <h3>
+                      {new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(product.price / 100)}
+                    </h3>
                     <button
                       onClick={() => {
                         removeItem(product.id);
@@ -103,7 +109,15 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
             </span>
           </div>
           <div>
-            <strong>Valor Total</strong> <span>{totalPrice}</span>
+            <strong>Valor Total</strong>{" "}
+            <span>
+              {totalPrice
+                ? new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(totalPrice / 100)
+                : "R$ 0,00"}
+            </span>
           </div>
           <button
             onClick={(e: MouseEvent) => {

@@ -3,11 +3,9 @@ import { relative } from "path";
 
 export const HomeContainer = styled("main", {
   display: "flex",
-  //gap: "3rem",
-  //width: "100%",
-  maxWidth: "calc(100vw -((100vw - 1180px)/2))",
+  maxWidth: "100vw",
   marginLeft: "auto",
-  minHeight: 656,
+  minHeight: 540,
 });
 
 export const Product = styled("div", {
