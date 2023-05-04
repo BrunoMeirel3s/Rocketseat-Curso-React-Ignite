@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useShoppingCart } from "use-shopping-cart";
 import { useEffect, useState } from "react";
 import { MouseEvent } from "react";
+import { stripe } from "@/lib/stripe";
 
 interface MenuProps {
   handleOpenCloseMenu: () => void;
@@ -31,7 +32,11 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
   async function handleFinalizarCompra(event: MouseEvent) {
     event.preventDefault();
 
-    console.log(cartDetails);
+    const productsKart = Object.values(cartDetails!);
+    const productsIds = productsKart.map((product) => {
+      return { productId: product.id, quantity: product.quantity };
+    });
+    console.log(productsIds);
 
     if (cartCount! >= 1) {
       try {
@@ -45,7 +50,6 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
 
   useEffect(() => {
     const productsCart = Object.values(cartDetails!);
-
     const productsLocalCart = productsCart.map((product) => {
       return {
         name: product.name,
