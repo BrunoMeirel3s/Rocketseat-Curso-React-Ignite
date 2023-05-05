@@ -11,6 +11,7 @@ import { useShoppingCart } from "use-shopping-cart";
 import { useEffect, useState } from "react";
 import { MouseEvent } from "react";
 import { stripe } from "@/lib/stripe";
+import axios from "axios";
 
 interface MenuProps {
   handleOpenCloseMenu: () => void;
@@ -33,14 +34,19 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
     event.preventDefault();
 
     const productsKart = Object.values(cartDetails!);
-    const productsIds = productsKart.map((product) => {
+    const products = productsKart.map((product) => {
       return { productId: product.id, quantity: product.quantity };
     });
-    console.log(productsIds);
 
     if (cartCount! >= 1) {
       try {
-        const result = await redirectToCheckout();
+        const response = await axios.post("/api/checkout", {
+          products: products,
+        });
+
+        const { checkoutUrl } = response.data;
+
+        const result = await redirectToCheckout(checkoutUrl);
         console.log(result);
       } catch (error) {
         console.log(error);
