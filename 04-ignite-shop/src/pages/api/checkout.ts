@@ -14,6 +14,11 @@ interface Products {
   quantity: number;
 }
 
+interface LineItems {
+  price: string;
+  quantity: number;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -27,39 +32,35 @@ export default async function handler(
   }
 
   const priceId = req.body.priceId;
+  let lineItems = [
+    { price: "price_1Mtnu5IyfZm95NwNT9d5X8Ho", quantity: 1 },
+    { price: "price_1MtnufIyfZm95NwNRRnWavGx", quantity: 1 },
+  ] as LineItems[];
 
   //Success URL é a para onde o stripe irá redirecionar em caso de sucesso na compra
   //o CHECKOUT_SESSION_ID é a variável da sessão que o STRIPE pode colocar na URL para trabalharmos e pegar os dados
   const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${process.env.NEXT_URL}/`;
 
-  const lineItems = await req.body.products.map(async (product) => {
+  await req.body.products.map(async (product: Products) => {
     const productStripe = await stripe.products.retrieve(product.productId, {
       expand: ["default_price"],
     });
 
     const price = productStripe.default_price as Stripe.Price;
-    return {
-      price: price.id,
-      quantity: product.quantity,
-    };
-  });
 
-  console.log(lineItems);
+    lineItems = [...lineItems, { price: price.id, quantity: product.quantity }];
+  });
 
   const checkoutSession = await stripe.checkout.sessions.create({
     success_url: successUrl,
     cancel_url: cancelUrl,
     mode: "payment",
-    line_items: [
-      {
-        price: priceId,
-        quantity: 1,
-      },
-    ],
+    line_items: lineItems,
   });
 
   return res.status(201).json({
     checkoutUrl: checkoutSession.url,
+    checkoutId: checkoutSession.id,
   });
 }

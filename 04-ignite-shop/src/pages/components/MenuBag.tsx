@@ -44,10 +44,9 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
           products: products,
         });
 
-        const { checkoutUrl } = response.data;
+        const { checkoutUrl, checkoutId } = response.data;
 
-        const result = await redirectToCheckout(checkoutUrl);
-        console.log(result);
+        await redirectToCheckout(checkoutId);
       } catch (error) {
         console.log(error);
       }
