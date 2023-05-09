@@ -35,20 +35,24 @@ export const SuccessContainer = styled("main", {
 });
 
 export const ImageContainer = styled("main", {
-  width: "100%",
-  maxWidth: 130,
+  width: 145,
   height: 145,
   background:
     "linear-gradient(180deg, rgba(30, 164, 131, .1), rgba(116, 101, 212, 1.1))",
-  borderRadius: 8,
+  borderRadius: 999,
   padding: "0.25rem",
-  marginTop: "4rem",
-
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-
   img: {
     objectFit: "cover",
   },
+  zIndex: "$$index",
+});
+
+export const ContainerProdutos = styled("div", {
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+  marginTop: "4rem",
 });
