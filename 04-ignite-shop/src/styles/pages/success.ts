@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { styled } from "..";
 
 export const SuccessContainer = styled("main", {
@@ -27,6 +28,7 @@ export const SuccessContainer = styled("main", {
     fontSize: "$lg",
     color: "$green500",
     fontWeight: "bold",
+    textDecoration: "none",
 
     "&:hover": {
       color: "$green300",
@@ -34,11 +36,13 @@ export const SuccessContainer = styled("main", {
   },
 });
 
-export const ImageContainer = styled("main", {
+export const ImageContainer = styled("div", {
   width: 145,
   height: 145,
+  marginLeft: "-2.4rem",
   background:
-    "linear-gradient(180deg, rgba(30, 164, 131, .1), rgba(116, 101, 212, 1.1))",
+    "linear-gradient(183deg, rgba(30,164,131,1) 0%, rgba(116,101,212,1) 100%);",
+  border: "1px solid rgba(0,0,0,0.08)",
   borderRadius: 999,
   padding: "0.25rem",
   display: "flex",
@@ -47,10 +51,9 @@ export const ImageContainer = styled("main", {
   img: {
     objectFit: "cover",
   },
-  zIndex: "$$index",
 });
 
-export const ContainerProdutos = styled("div", {
+export const ContainerProdutos = styled("main", {
   display: "flex",
   justifyContent: "center",
   flexDirection: "row",

@@ -8,7 +8,9 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import Stripe from "stripe";
+import { useShoppingCart } from "use-shopping-cart";
 
 //const product = session.line_items!.data[0].price!.product as Stripe.Product;
 
@@ -27,6 +29,12 @@ interface SuccessProps {
 }
 
 export default function Success({ customerName, products }: SuccessProps) {
+  const { clearCart } = useShoppingCart();
+
+  useEffect(() => {
+    clearCart();
+  }, []);
+
   return (
     <>
       <Head>
@@ -37,9 +45,9 @@ export default function Success({ customerName, products }: SuccessProps) {
         <h1>Compra Efetuada!</h1>
 
         <ContainerProdutos>
-          {products.map((product, index) => {
+          {products.map((product, indexVetor) => {
             return (
-              <ImageContainer css={{ $$index: { index } }}>
+              <ImageContainer style={{ zIndex: { indexVetor } }}>
                 <Image
                   src={product.price.product.images[0]}
                   width={120}
