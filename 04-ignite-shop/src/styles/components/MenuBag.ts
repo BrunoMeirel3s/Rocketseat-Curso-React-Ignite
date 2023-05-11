@@ -94,5 +94,10 @@ export const ContainerRodape = styled("div", {
     height: "4rem",
     fontSize: "1.25rem",
     cursor: "pointer",
+
+    "&:disabled": {
+      background: "$green500",
+      cursor: "not-allowed",
+    },
   },
 });

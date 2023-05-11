@@ -29,10 +29,11 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
     useShoppingCart();
 
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleFinalizarCompra(event: MouseEvent) {
     event.preventDefault();
-
+    setIsLoading(true);
     const productsKart = Object.values(cartDetails!);
     const products = productsKart.map((product) => {
       return { productId: product.id, quantity: product.quantity };
@@ -51,6 +52,8 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
         console.log(error);
       }
     }
+
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -132,6 +135,7 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
             onClick={(e: MouseEvent) => {
               handleFinalizarCompra(e);
             }}
+            disabled={isLoading}
           >
             Finalizar Compra
           </button>

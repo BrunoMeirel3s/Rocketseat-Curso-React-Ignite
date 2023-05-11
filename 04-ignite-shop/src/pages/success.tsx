@@ -60,8 +60,9 @@ export default function Success({ customerName, products }: SuccessProps) {
         </ContainerProdutos>
 
         <p>
-          Uhuul <strong>{customerName}</strong>, sua compra de 2 camisetas já
-          está a caminho da sua casa.
+          Uhuul <strong>{customerName}</strong>, sua compra de{" "}
+          {products ? products.length : "0"} camisetas já está a caminho da sua
+          casa.
         </p>
 
         <Link href="">Voltar ao catálogo</Link>
