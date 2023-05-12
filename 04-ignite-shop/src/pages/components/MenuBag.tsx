@@ -13,6 +13,8 @@ import { MouseEvent } from "react";
 import { stripe } from "@/lib/stripe";
 import axios from "axios";
 
+import imgLoading from "../../asssets/loading.svg";
+
 interface MenuProps {
   handleOpenCloseMenu: () => void;
 }
@@ -137,7 +139,13 @@ export default function Menu({ handleOpenCloseMenu }: MenuProps) {
             }}
             disabled={isLoading}
           >
-            Finalizar Compra
+            {isLoading ? (
+              <>
+                <Image src={imgLoading} alt="" width={24} />
+              </>
+            ) : (
+              <>Finalizar Compra</>
+            )}
           </button>
         </ContainerRodape>
       </MenuBag>
