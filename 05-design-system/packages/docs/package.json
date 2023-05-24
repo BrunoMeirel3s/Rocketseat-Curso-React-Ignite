@@ -14,6 +14,9 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@storybook/addon-essentials": "^7.0.14",
+    "@storybook/addon-interactions": "^7.0.14",
+    "@storybook/addon-links": "^7.0.14",
     "@storybook/blocks": "^7.0.14",
     "@storybook/react": "^7.0.14",
     "@storybook/react-vite": "^7.0.14",
@@ -23,9 +26,9 @@
     "vite": "^4.3.8"
   },
   "dependencies": {
-    "@storybook/addon-essentials": "^7.0.14",
-    "@storybook/addon-interactions": "^7.0.14",
-    "@storybook/addon-links": "^7.0.14",
+    "@ignite-ui/react": "*",
+    "@ignite-ui/tokens": "*",
+    "@ignite-ui/eslint-config": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "storybook": "^7.0.14"
