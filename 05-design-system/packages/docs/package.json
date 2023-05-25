@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "storybook dev -p 6006",
+    "lint": "eslint src/**/*.ts* --fix",
     "build": "storybook build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -26,9 +27,11 @@
     "vite": "^4.3.8"
   },
   "dependencies": {
+    "@ignite-ui/eslint-config": "*",
+    "@ignite-ui/ts-config": "*",
     "@ignite-ui/react": "*",
     "@ignite-ui/tokens": "*",
-    "@ignite-ui/eslint-config": "*",
+    "polished": "^4.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "storybook": "^7.0.14"
