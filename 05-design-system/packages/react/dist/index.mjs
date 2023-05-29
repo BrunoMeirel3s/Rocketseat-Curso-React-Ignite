@@ -118,31 +118,42 @@ var {
   }
 });
 
-// src/index.tsx
-var Button = styled("button", {
-  fontFamily: "$default",
-  backgroundColor: "$ignite500",
-  borderRadius: "$sm",
+// src/components/Box.tsx
+var Box = styled("div", {
   padding: "$4",
-  border: 0,
-  fontWeight: "bold",
-  color: "$white",
+  borderRadius: "$md",
+  backgroundColor: "$gray800",
+  border: "1px solid $gray600"
+});
+
+// src/components/Text.tsx
+var Text = styled("p", {
+  fontFamily: "$default",
+  lineHeight: "$base",
+  margin: 0,
+  color: "$gray100",
   variants: {
     size: {
-      small: {
-        fontSize: 14,
-        padding: "$2 $4"
-      },
-      big: {
-        fontSize: 16,
-        padding: "$3 $6"
-      }
+      xxs: { fontSize: "$xxs" },
+      xs: { fontSize: "$xs" },
+      sm: { fontSize: "$sm" },
+      md: { fontSize: "$md" },
+      lg: { fontSize: "$lg" },
+      xl: { fontSize: "$xl" },
+      "2xl": { fontSize: "$2xl" },
+      "4xl": { fontSize: "$4xl" },
+      "5xl": { fontSize: "$5xl" },
+      "6xl": { fontSize: "$6xl" },
+      "7xl": { fontSize: "$7xl" },
+      "8xl": { fontSize: "$8xl" },
+      "9xl": { fontSize: "$9xl" }
     }
   },
   defaultVariants: {
-    size: "small"
+    size: "md"
   }
 });
 export {
-  Button
+  Box,
+  Text
 };
