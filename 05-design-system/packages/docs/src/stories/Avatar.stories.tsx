@@ -8,6 +8,13 @@ export default {
     src: 'https://github.com/brunomeirel3s.png',
     alt: 'Bruno Meireles',
   },
+  argTypes: {
+    src: {
+      control: {
+        type: 'text',
+      },
+    },
+  },
 } as Meta<AvatarProps>
 
 export const Primary: StoryObj<AvatarProps> = {
