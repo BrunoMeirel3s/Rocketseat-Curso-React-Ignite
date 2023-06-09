@@ -5,7 +5,9 @@
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "release": "turbo run build --filter=!docs && changeset publish"
+
   },
   "devDependencies": {
     "turbo": "^1.9.9"
