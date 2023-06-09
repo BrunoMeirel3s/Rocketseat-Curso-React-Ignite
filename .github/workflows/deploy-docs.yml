@@ -3,7 +3,7 @@ name: Deploy docs
 on:
   push:
     branches: 
-    -main
+    - main
 
   jobs:
     build-and-deploy:
@@ -13,7 +13,7 @@ on:
           working-directory: ./05-design-system
           uses: actions/checkout@v3
 
-        -name: Setup Node.js
+        - name: Setup Node.js
           uses: actions/setup-node@v3
           working-directory: ./05-design-system
           with: 
