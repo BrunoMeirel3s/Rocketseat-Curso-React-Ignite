@@ -19,7 +19,7 @@ const config = {
   },
   viteFinal:(config, {configType}) => {
     if(configType === 'PRODUCTION'){
-      config.base = '/05-design-system'
+      config.base = '/Rocketseat-Curso-React-Ignite/tree/main/05-design-system/'
     }
     return config
   }
