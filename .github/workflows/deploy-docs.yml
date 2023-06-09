@@ -17,9 +17,9 @@ on:
           with: 
             node-version: 18
 
-          - run: npm ci
+        - run: npm ci
 
-          - run: npm run build
+        - run: npm run build
 
         - name: Deploy storybook
           working-directory: ./05-design-system/packages/docs
