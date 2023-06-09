@@ -12,7 +12,6 @@ on:
         - name: Checkout
           working-directory: ./05-design-system
           uses: actions/checkout@v3
-
         - name: Setup Node.js
           uses: actions/setup-node@v3
           working-directory: ./05-design-system
