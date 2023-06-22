@@ -6,10 +6,13 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
     "release": "turbo run build --filter=!docs && changeset publish"
-
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
+    "@storybook/cli": "^7.0.20",
     "turbo": "^1.9.9"
   }
 }

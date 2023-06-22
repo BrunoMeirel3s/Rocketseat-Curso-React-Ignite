@@ -67,7 +67,17 @@ __export(src_exports, {
   MultiStep: () => MultiStep,
   Text: () => Text,
   TextArea: () => TextArea,
-  TextInput: () => TextInput
+  TextInput: () => TextInput,
+  ToastIgnite: () => ToastIgnite,
+  Tooltip: () => Tooltip,
+  config: () => config,
+  createTheme: () => createTheme,
+  css: () => css,
+  getCssText: () => getCssText,
+  globalCss: () => globalCss,
+  keyframes: () => keyframes,
+  styled: () => styled,
+  theme: () => theme
 });
 module.exports = __toCommonJS(src_exports);
 
@@ -86,7 +96,8 @@ var colors = {
   ignite300: "#00B37E",
   ignite500: "#00875F",
   ignite700: "#015F43",
-  ignite900: "#00291D"
+  ignite900: "#00291D",
+  test: "#fff"
 };
 var space = {
   1: "0.25rem",
@@ -173,7 +184,7 @@ var {
 
 // src/components/Box.tsx
 var Box = styled("div", {
-  padding: "$4",
+  padding: "$6",
   borderRadius: "$md",
   backgroundColor: "$gray800",
   border: "1px solid $gray600"
@@ -238,8 +249,8 @@ var Avatar = __toESM(require("@radix-ui/react-avatar"));
 var AvatarContainer = styled(Avatar.Root, {
   borderRadius: "$full",
   display: "inline-block",
-  width: "$12",
-  height: "$12",
+  width: "$16",
+  height: "$16",
   overflow: "hidden"
 });
 var AvatarImage = styled(Avatar.Image, {
@@ -291,6 +302,9 @@ var Button = styled("button", {
   cursor: "pointer",
   "&:disabled": {
     cursor: "not-allowed"
+  },
+  "&:focus": {
+    boxShadow: "0 0 0 2px $colors$gray100"
   },
   svg: {
     width: "$4",
@@ -346,6 +360,9 @@ var Button = styled("button", {
 });
 Button.displayName = "Button";
 
+// src/components/TextInput/index.tsx
+var import_react2 = require("react");
+
 // src/components/TextInput/styles.ts
 var TextInputContainer = styled("div", {
   backgroundColor: "$gray900",
@@ -354,13 +371,26 @@ var TextInputContainer = styled("div", {
   boxSizing: "border-box",
   border: "2px solid $gray900",
   display: "flex",
-  alignItems: "baseline",
+  alignItems: "center",
+  variants: {
+    size: {
+      sm: {
+        padding: "$2 $3"
+      },
+      md: {
+        padding: "$3 $4"
+      }
+    }
+  },
   "&:has(input:focus)": {
     borderColor: "$ignite300"
   },
   "&:has(input:disabled)": {
     opacity: 0.5,
     cursor: "not-allowed"
+  },
+  defaultVariants: {
+    size: "md"
   }
 });
 var Prefix = styled("span", {
@@ -383,20 +413,22 @@ var Input = styled("input", {
   "&:disabled": {
     cursor: "not-allowed"
   },
-  "&:placeholder": {
+  "&::placeholder": {
     color: "$gray400"
   }
 });
 
 // src/components/TextInput/index.tsx
 var import_jsx_runtime2 = require("react/jsx-runtime");
-function TextInput(_a) {
-  var _b = _a, { prefix } = _b, props = __objRest(_b, ["prefix"]);
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(TextInputContainer, { children: [
-    !!prefix && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Prefix, { children: prefix }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Input, __spreadValues({}, props))
-  ] });
-}
+var TextInput = (0, import_react2.forwardRef)(
+  (_a, ref) => {
+    var _b = _a, { prefix } = _b, props = __objRest(_b, ["prefix"]);
+    return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(TextInputContainer, { children: [
+      !!prefix && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Prefix, { children: prefix }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Input, __spreadValues({ ref }, props))
+    ] });
+  }
+);
 TextInput.displayName = "TextInput";
 
 // src/components/TextArea.tsx
@@ -448,7 +480,7 @@ var CheckBoxContainer = styled(CheckBox.Root, {
   '&[data-state="checked"]': {
     backgroundColor: "$ignite300"
   },
-  "&:focus": {
+  '&:focus, &[data-state="checked"]': {
     border: "2px solid $ignite300"
   }
 });
@@ -530,6 +562,212 @@ function MultiStep({ size, currentStep = 1 }) {
   ] });
 }
 MultiStep.displayName = "MultiStep";
+
+// src/components/Toast/index.tsx
+var import_react3 = require("react");
+
+// src/components/Toast/styles.ts
+var ToastContainer = styled("div", {
+  button: {
+    all: "unset"
+  },
+  ".ToastViewport": {
+    "--viewport-padding": "25px",
+    position: "fixed",
+    bottom: "0px",
+    right: "0px",
+    display: "flex",
+    "flex-direction": "column",
+    padding: "var(--viewport-padding)",
+    gap: "10px",
+    width: "390px",
+    "max-width": "100vw",
+    margin: "0",
+    "list-style": "none",
+    "z-index": "9999",
+    outline: "none"
+  },
+  ".ToastRoot": {
+    fontFamily: "Roboto",
+    "background-color": "$gray600",
+    "border-radius": "6px",
+    "box-shadow": "hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
+    padding: "15px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "$2",
+    position: "relative"
+  },
+  ".ToastTitle": {
+    fontSize: "$lg",
+    fontWeight: "$bold",
+    color: "$white"
+  },
+  ".ToastDescription": {
+    fontSize: "$sm",
+    color: "$gray200",
+    fontWeight: "$normal"
+  },
+  ".CloseButton": {
+    position: "absolute",
+    top: "$3",
+    right: "$3",
+    svg: {
+      color: "$white"
+    }
+  },
+  '.ToastRoot[data-state="open"]': {
+    animation: "slideIn 500ms cubic-bezier(0.16, 1, 0.3, 1)"
+  },
+  '.ToastRoot[data-state="closed"]': {
+    animation: "hide 100ms ease-in"
+  },
+  '.ToastRoot[data-swipe="move"]': {
+    transform: "translateX(var(--radix-toast-swipe-move-x))"
+  },
+  '.ToastRoot[data-swipe="cancel"]': {
+    transform: "translateX(0)",
+    transition: "transform 200ms ease-out"
+  },
+  '.ToastRoot[data-swipe="end"]': {
+    animation: "swipeOut 100ms ease-out"
+  },
+  "@keyframes hide": {
+    from: {
+      opacity: "1"
+    },
+    to: {
+      opacity: "0"
+    }
+  },
+  "@keyframes slideIn": {
+    from: {
+      transform: "translateX(calc(100% + var(--viewport-padding)))"
+    },
+    to: {
+      transform: "translateX(0)"
+    }
+  },
+  "@keyframes swipeOut": {
+    from: {
+      transform: "translateX(var(--radix-toast-swipe-end-x))"
+    },
+    to: {
+      transform: "translateX(calc(100% + var(--viewport-padding)))"
+    }
+  }
+});
+
+// src/components/Toast/index.tsx
+var Toast = __toESM(require("@radix-ui/react-toast"));
+var import_phosphor_react3 = require("phosphor-react");
+var import_jsx_runtime5 = require("react/jsx-runtime");
+function ToastIgnite({
+  title,
+  description,
+  openModal = true
+}) {
+  const [open, setOpen] = (0, import_react3.useState)(false);
+  (0, import_react3.useEffect)(() => {
+    setOpen(openModal);
+  }, [openModal]);
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(ToastContainer, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(Toast.Provider, { swipeDirection: "right", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(Toast.Root, { className: "ToastRoot", open, onOpenChange: setOpen, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Toast.Title, { className: "ToastTitle", children: title }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Toast.Description, { asChild: true, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: "ToastDescription", children: description }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Toast.Action, { className: "CloseButton", asChild: true, altText: "Close", children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_phosphor_react3.X, {}) }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Toast.Viewport, { className: "ToastViewport" })
+  ] }) });
+}
+
+// src/components/Tooltip/index.tsx
+var TooltipRadix2 = __toESM(require("@radix-ui/react-tooltip"));
+
+// src/components/Tooltip/styles.ts
+var TooltipRadix = __toESM(require("@radix-ui/react-tooltip"));
+var ContainerTooltip = styled("div", {
+  "@keyframes slideUpAndFade": {
+    from: {
+      opacity: "0",
+      transform: "translateY(2px)"
+    },
+    to: {
+      opacity: "1",
+      transform: "translateY(0)"
+    }
+  },
+  "@keyframes slideRightAndFade": {
+    from: {
+      opacity: "0",
+      transform: "translateX(-2px)"
+    },
+    to: {
+      opacity: "1",
+      transform: "translateX(0)"
+    }
+  },
+  "@keyframes slideDownAndFade": {
+    from: {
+      opacity: "0",
+      transform: "translateY(-2px)"
+    },
+    to: {
+      opacity: "1",
+      transform: "translateY(0)"
+    }
+  },
+  "@keyframes slideLeftAndFade": {
+    from: {
+      opacity: "0",
+      transform: "translateX(2px)"
+    },
+    to: {
+      opacity: "1",
+      transform: "translateX(0)"
+    }
+  }
+});
+var TooltipRadixContent = styled(TooltipRadix.Content, {
+  borderRadius: "4px",
+  padding: "10px 15px",
+  fontSize: "15px",
+  lineHeight: "1",
+  color: "$gray200",
+  backgroundColor: "$gray600",
+  "box-shadow": "hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
+  "user-select": "none",
+  "animation-duration": "400ms",
+  "animation-timing-function": "cubic-bezier(0.16, 1, 0.3, 1)",
+  "will-change": "transform, opacity",
+  '&[data-state="delayed-open"][data-side="top"]': {
+    "animation-name": "slideDownAndFade"
+  },
+  '&[data-state="delayed-open"][data-side="right"]': {
+    "animation-name": "slideLeftAndFade"
+  },
+  '&[data-state="delayed-open"][data-side="bottom"]': {
+    "animation-name": "slideUpAndFade"
+  },
+  '&[data-state="delayed-open"][data-side="left"]': {
+    "animation-name": "slideRightAndFade"
+  },
+  ".TooltipArrow": {
+    fill: "$gray700"
+  }
+});
+
+// src/components/Tooltip/index.tsx
+var import_jsx_runtime6 = require("react/jsx-runtime");
+function Tooltip({ content, children }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(ContainerTooltip, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TooltipRadix2.Provider, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(TooltipRadix2.Root, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TooltipRadix2.Trigger, { asChild: true, children }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TooltipRadix2.Portal, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(TooltipRadixContent, { sideOffset: 5, children: [
+      content,
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TooltipRadix2.Arrow, { className: "TooltipArrow" })
+    ] }) })
+  ] }) }) });
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Avatar,
@@ -540,5 +778,15 @@ MultiStep.displayName = "MultiStep";
   MultiStep,
   Text,
   TextArea,
-  TextInput
+  TextInput,
+  ToastIgnite,
+  Tooltip,
+  config,
+  createTheme,
+  css,
+  getCssText,
+  globalCss,
+  keyframes,
+  styled,
+  theme
 });
